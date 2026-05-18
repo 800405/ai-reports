@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>日次AI運用レポート 2026-05-18</title>
+  <style>
+body{margin:0;background:#f6f7f9;color:#172033;font-family:'Segoe UI','Yu Gothic UI',Meiryo,sans-serif;line-height:1.55}
+header{background:#223044;color:white;padding:32px 36px}main{max-width:1180px;margin:0 auto;padding:20px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card,section{background:white;border:1px solid #d9dee8;border-radius:8px}
+.card{padding:14px}.card strong{display:block;font-size:30px}section{margin:16px 0;overflow:hidden}
+h1{margin:0 0 10px;font-size:38px;line-height:1.15}h2{font-size:21px;margin:0;padding:14px 16px;background:#fbfcfe;border-bottom:1px solid #d9dee8}
+.meta{display:flex;gap:22px;flex-wrap:wrap;font-size:20px;font-weight:650}.meta span{display:inline-block}
+.body{padding:14px 16px}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;vertical-align:top;padding:9px;border-bottom:1px solid #d9dee8}
+th{background:#f1f4f8}.badge{display:inline-block;border-radius:999px;padding:2px 8px;font-size:12px;font-weight:650}
+.ok{background:#e7f5ee;color:#157347}.warn{background:#fff4df;color:#a15c00}.todo{background:#ffe8ee;color:#9f1239}.muted{background:#eee;color:#555}
+a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}.recommend{font-size:15px}
+.issue-grid,.improvement-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.issue-item,.improvement-item{border:1px solid #d9dee8;border-radius:8px;padding:12px;background:#fbfcfe}
+.issue-item h3,.improvement-item h3{font-size:16px;margin:4px 0 8px}.issue-item p,.improvement-item p{margin:6px 0}
+@media(max-width:850px){header{padding:26px 22px}h1{font-size:30px}.meta{font-size:17px;gap:10px}.cards{grid-template-columns:1fr}main{padding:12px}table{font-size:13px}}
+@media(max-width:850px){.issue-grid,.improvement-grid{grid-template-columns:1fr}}
+.chart-wrap{margin:4px 0}.chart-legend{margin-bottom:6px;display:flex;flex-wrap:wrap;gap:8px}
+.lg-item{font-size:12px;display:flex;align-items:center;gap:4px}.lg-dot{display:inline-block;width:10px;height:10px;border-radius:2px}
+.chart-outer{display:flex;gap:6px}.chart-y{display:flex;flex-direction:column;justify-content:space-between;font-size:10px;color:#888;text-align:right;width:32px;height:170px;padding-bottom:20px}
+.chart-inner{flex:1;position:relative;border-bottom:2px solid #d4dae6;height:170px}.ref-line{position:absolute;left:0;right:0;border-top:1px dashed #c0c8d8}.ref-line.warn{border-top-color:#f59e0b}
+.chart-bars{display:flex;align-items:flex-end;height:150px;gap:4px;padding:0 2px}.bar-group{display:flex;align-items:flex-end;gap:2px;flex:1;position:relative;padding-bottom:20px}
+.bar{flex:1;min-height:2px;border-radius:2px 2px 0 0;cursor:default}.bar:hover{filter:brightness(1.1)}.bar-lbl{position:absolute;bottom:0;width:100%;text-align:center;font-size:9px;color:#888}
+.filter-bar{display:flex;gap:8px;margin-bottom:10px}.filter-btn{padding:4px 12px;border:1px solid #c4ccd8;border-radius:4px;background:#f5f7fa;cursor:pointer;font-size:13px;color:#4a5568}.filter-btn.active{background:#4a7fd4;color:#fff;border-color:#4a7fd4}
+.date-sel-label{font-size:13px;color:#c8d4e8}.date-sel-label select{font-size:13px;padding:2px 6px;border:1px solid #3a4a66;border-radius:4px;background:#1e2d44;color:#e8edf5;cursor:pointer}
+</style>
+  <script>(function(){function r(){document.querySelectorAll('a[data-drive-fallback]').forEach(function(a){a.href=a.getAttribute('data-drive-fallback');a.removeAttribute('data-drive-fallback');if(!a.target)a.target='_blank';a.rel='noopener';});}if(window.location.protocol!=='file:')r();})();</script><script>var _linkFilters=new Set(['active']);function _applyLinkFilter(){document.querySelectorAll('#links-table tbody tr').forEach(function(r){r.style.display=(_linkFilters.size===0||_linkFilters.has(r.dataset.pstatus))?'':'none';});}function toggleLinkFilter(f,btn){if(f==='all'){_linkFilters=new Set(['active','paused','completed','other']);document.querySelectorAll('.filter-btn[data-f]').forEach(function(b){b.classList.add('active');});}else{if(_linkFilters.has(f)){_linkFilters.delete(f);btn.classList.remove('active');}else{_linkFilters.add(f);btn.classList.add('active');}document.querySelector('.filter-btn[data-f="all"]').classList.toggle('active',_linkFilters.size===4);}_applyLinkFilter();}document.addEventListener('DOMContentLoaded',function(){_applyLinkFilter();});</script>
+</head>
+<body>
+  <header>
+    <h1>日次AI運用レポート</h1>
+    <div class="meta">
+      <label class='date-sel-label'>基準日: <select id='date-selector' onchange="window.location.href=this.value+'.html'"><option value='2026-05-18' selected>2026-05-18</option><option value='2026-05-16'>2026-05-16</option><option value='2026-05-15'>2026-05-15</option><option value='2026-05-14'>2026-05-14</option></select></label>
+      <span>更新時刻: 2026-05-18 17:01</span>
+    </div>
+  </header>
+  <main>
+    <div class="cards">
+      <div class="card"><strong>4</strong><span>稼働中プロジェクト</span></div>
+      <div class="card"><strong>1</strong><span>一時停止中</span></div>
+      <div class="card"><strong>2</strong><span>完了済み</span></div>
+      <div class="card"><strong>0</strong><span>未処理指示</span></div>
+    </div>
+
+    <section>
+      <h2>課題とコメント</h2>
+      <div class="body recommend">
+        <h3>プロジェクト課題</h3>
+        <div class="issue-grid">
+          <article class='issue-item'><h3>AI運用管理（ai-operations）</h3><p><strong>課題:</strong> Codex、Claude、Slack、GitHub、Google Drive、使用量レポートの連携維持</p><p><strong>ゴール:</strong> プロジェクト管理、報告、引き継ぎを低トークンで回せるAI運用を維持する</p></article>
+<article class='issue-item'><h3>クリップボード同期（clipboardsync）</h3><p><strong>課題:</strong> 次に実装する対象の決定が必要</p><p><strong>ゴール:</strong> Google Drive経由で安定したPC間クリップボード同期を実現する</p></article>
+<article class='issue-item'><h3>Gmail管理（gmail-manager）</h3><p><strong>課題:</strong> 運用確認と次に優先する機能の決定が必要</p><p><strong>ゴール:</strong> 安全なAI分類とアーカイブ導線を備えたGmail整理アプリにする</p></article>
+<article class='issue-item'><h3>副業管理（side-business）</h3><p><strong>課題:</strong> 次に実行する計画の優先順位付けが必要</p><p><strong>ゴール:</strong> 最も効果の高い副業プランを選び、実行する</p></article>
+        </div>
+        <p><strong>コメント:</strong> 日次の使用率は Claude Code、Codex が高めです。大きな調査や実装は分割し、既存の記録と差分確認を先に使ってください。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Code利用制限対策: おすすめの対策</h2>
+      <div class="body">
+        <p><a href='../improvements/code-usage-limit-actions.html' data-drive-fallback='https://drive.google.com/drive/search?q=AI_Operations+reports+code-usage-limit-actions.html'>改善リストHTMLを開く</a></p>
+        <div class="improvement-grid">
+          <article class='improvement-item'><div><span class='badge warn'>保留</span> <span class='badge todo'>優先度: 中</span> <code style='font-size:11px;color:#888'>IMP-035</code></div><h3>API系プロンプトをキャッシュ向けに並べる</h3><p><strong>カテゴリ:</strong> Token節約</p><p><strong>理由:</strong> OpenAIのPrompt Cachingは同一prefixで効果が出るため、静的指示を先頭、動的入力を末尾に置くとコストと遅延を下げられる。</p><p><strong>次の行動:</strong> 自作API/自動化プロンプトの共通system、規約、出力schemaを先頭固定にし、案件固有情報を末尾に寄せてcached_tokensを記録する。</p><p><strong>出典:</strong> <a href='https://developers.openai.com/api/docs/guides/prompt-caching'>https://developers.openai.com/api/docs/guides/prompt-caching</a></p></article>
+<article class='improvement-item'><div><span class='badge warn'>保留</span> <span class='badge todo'>優先度: 低</span> <code style='font-size:11px;color:#888'>IMP-012</code></div><h3>Claude Code Codex pluginの本格運用</h3><p><strong>カテゴリ:</strong> Claude / Codex連携</p><p><strong>理由:</strong> Claude側の利用制限や手動セットアップが残り、自動運用にまだ不安定さがあるため。</p><p><strong>次の行動:</strong> Claudeの制限解除後に必要最小限の導入だけ再確認する。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>日次トークン使用率</h2>
+      <div class="body">
+        <table>
+          <thead><tr><th>ツール</th><th>使用量</th><th>目安</th><th>使用率</th><th>残り目安</th><th>判定</th><th>週次予測</th><th>月次予測</th></tr></thead>
+          <tbody><tr><td>Claude Code</td><td>19,900,042</td><td>15,069,590</td><td>132.1%</td><td>0.0%</td><td><span class='badge todo'>上限注意</span></td><td>123.3%</td><td>132.1%</td></tr>
+<tr><td>Codex</td><td>8,542,836</td><td>8,333,333</td><td>102.5%</td><td>0.0%</td><td><span class='badge todo'>上限注意</span></td><td>95.7%</td><td>102.5%</td></tr></tbody>
+        </table>
+        <p class="note">予測は現在の記録から単純換算した自己管理用の目安です。公式の利用上限や課金額ではありません。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>トークン使用量の推移</h2>
+      <div class="body">
+        <div class='chart-wrap'><div class='chart-legend'><span class='lg-item'><span class='lg-dot' style='background:#4a7fd4'></span>Claude Code</span><span class='lg-item'><span class='lg-dot' style='background:#e67e22'></span>Codex</span></div><div class='chart-outer'><div class='chart-y'><span>150%</span><span>100%</span><span>80%</span><span>0%</span></div><div class='chart-inner'><div class='ref-line' style='bottom:100px'></div><div class='ref-line warn' style='bottom:80px'></div><div class='chart-bars'><div class='bar-group'><div class='bar rate-over' style='height:132px;background:#4a7fd4' title='Claude Code: 132.1%'></div><div class='bar rate-ok' style='height:0px;background:#e67e22' title='Codex: 0.0%'></div><div class='bar-lbl'>5/13</div></div><div class='bar-group'><div class='bar rate-ok' style='height:0px;background:#4a7fd4' title='Claude Code: 0.0%'></div><div class='bar rate-over' style='height:150px;background:#e67e22' title='Codex: 350.5%'></div><div class='bar-lbl'>5/13</div></div><div class='bar-group'><div class='bar rate-ok' style='height:0px;background:#4a7fd4' title='Claude Code: 0.0%'></div><div class='bar rate-ok' style='height:31px;background:#e67e22' title='Codex: 31.2%'></div><div class='bar-lbl'>5/15</div></div><div class='bar-group'><div class='bar rate-ok' style='height:0px;background:#4a7fd4' title='Claude Code: 0.0%'></div><div class='bar rate-over' style='height:102px;background:#e67e22' title='Codex: 102.5%'></div><div class='bar-lbl'>5/16</div></div></div></div></div></div>
+        <p class="note">直近14件の日次記録。棒の高さは使用率（最大150%表示）。橙破線=80%、グレー破線=100%。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>稼働中プロジェクト</h2>
+      <div class="body">
+        <table>
+          <thead><tr><th>プロジェクト</th><th>現在の課題</th><th>ゴール</th><th>GitHub</th></tr></thead>
+          <tbody><tr><td>AI運用管理（ai-operations）</td><td>Codex、Claude、Slack、GitHub、Google Drive、使用量レポートの連携維持</td><td>プロジェクト管理、報告、引き継ぎを低トークンで回せるAI運用を維持する</td><td><a href='https://github.com/800405/ai-operations'>GitHub</a></td></tr>
+<tr><td>クリップボード同期（clipboardsync）</td><td>次に実装する対象の決定が必要</td><td>Google Drive経由で安定したPC間クリップボード同期を実現する</td><td><a href='https://github.com/800405/clipboardsync'>GitHub</a></td></tr>
+<tr><td>Gmail管理（gmail-manager）</td><td>運用確認と次に優先する機能の決定が必要</td><td>安全なAI分類とアーカイブ導線を備えたGmail整理アプリにする</td><td><a href='https://github.com/800405/gmail-manager'>GitHub</a></td></tr>
+<tr><td>副業管理（side-business）</td><td>次に実行する計画の優先順位付けが必要</td><td>最も効果の高い副業プランを選び、実行する</td><td><a href='https://github.com/800405/side-business'>GitHub</a></td></tr></tbody>
+        </table>
+        <p class="note">PROJECTS.md: <span class='badge warn'>4日前に更新</span></p>
+      </div>
+    </section>
+
+    <section>
+      <h2>連携状況</h2>
+      <div class="body">
+        <div class="filter-bar">
+          <button class="filter-btn" data-f="all" onclick="toggleLinkFilter('all',this)">すべて</button>
+          <button class="filter-btn active" data-f="active" onclick="toggleLinkFilter('active',this)">稼働中</button>
+          <button class="filter-btn" data-f="paused" onclick="toggleLinkFilter('paused',this)">一時停止</button>
+          <button class="filter-btn" data-f="completed" onclick="toggleLinkFilter('completed',this)">完了</button>
+        </div>
+        <table id="links-table">
+          <thead><tr><th>プロジェクト</th><th>ステータス</th><th>Slack</th><th>Codex</th><th>Claude</th></tr></thead>
+          <tbody><tr data-pstatus='active'><td>AI運用管理（ai-operations）</td><td>稼働中</td><td>#proj-ai-operations <span class='badge ok'>連携済み</span></td><td>current Codex chat <span class='badge ok'>連携済み</span></td><td>ai-operations <span class='badge todo'>要対応</span></td></tr>
+<tr data-pstatus='completed'><td>ブックマーク管理（bookmarks）</td><td>完了</td><td>- <span class='badge muted'>対象外</span></td><td>- <span class='badge muted'>対象外</span></td><td>- <span class='badge muted'>対象外</span></td></tr>
+<tr data-pstatus='active'><td>クリップボード同期（clipboardsync）</td><td>稼働中</td><td>#proj-clipboardsync <span class='badge ok'>連携済み</span></td><td>clipboardsync <span class='badge todo'>要対応</span></td><td>clipboardsync <span class='badge todo'>要対応</span></td></tr>
+<tr data-pstatus='active'><td>Gmail管理（gmail-manager）</td><td>稼働中</td><td>#proj-gmail-manager <span class='badge ok'>連携済み</span></td><td>gmail-manager <span class='badge todo'>要対応</span></td><td>gmail-manager <span class='badge todo'>要対応</span></td></tr>
+<tr data-pstatus='completed'><td>Kindleキャプチャ（kindle_capture）</td><td>完了</td><td>- <span class='badge muted'>対象外</span></td><td>- <span class='badge muted'>対象外</span></td><td>- <span class='badge muted'>対象外</span></td></tr>
+<tr data-pstatus='paused'><td>バーコードスキャナー（scanner_barcodes）</td><td>一時停止</td><td>#proj-scanner-barcodes <span class='badge todo'>要対応</span></td><td>scanner_barcodes <span class='badge todo'>要対応</span></td><td>scanner_barcodes <span class='badge todo'>要対応</span></td></tr>
+<tr data-pstatus='active'><td>副業管理（side-business）</td><td>稼働中</td><td>#proj-side-business <span class='badge ok'>連携済み</span></td><td>side-business <span class='badge todo'>要対応</span></td><td>side-business <span class='badge todo'>要対応</span></td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>指示キュー</h2>
+      <div class="body">
+        <table>
+          <thead><tr><th>ID</th><th>プロジェクト</th><th>状態</th><th>指示</th><th>担当</th></tr></thead>
+          <tbody><tr><td colspan='5'>未対応・対応中・保留の指示はありません。</td></tr></tbody>
+        </table>
+        <p class="note">INSTRUCTION_QUEUE.md: <span class='badge warn'>4日前に更新</span></p>
+      </div>
+    </section>
+
+    
+    <section>
+      <h2>副業プラン（上位候補）</h2>
+      <div class="body">
+        <p class='note' style='margin-bottom:10px'><a href='C:\Users\yama\マイドライブ（800405om@gmail.com）\AI_Operations\reports\バイブコーディング副業\html\index.html'>概要</a> &nbsp;|&nbsp; <a href='C:\Users\yama\マイドライブ（800405om@gmail.com）\AI_Operations\reports\バイブコーディング副業\html\plans.html'>プラン一覧</a> &nbsp;|&nbsp; <a href='C:\Users\yama\マイドライブ（800405om@gmail.com）\AI_Operations\reports\バイブコーディング副業\html\matrix.html'>マトリクス</a> &nbsp;|&nbsp; <a href='C:\Users\yama\マイドライブ（800405om@gmail.com）\AI_Operations\reports\バイブコーディング副業\html\strategy.html'>戦略</a></p>
+        <table>
+          <thead><tr><th>#</th><th>プラン名</th><th>週間作業時間</th><th>月収目安</th><th>実質時給</th><th>評価</th></tr></thead>
+          <tbody><tr><td><strong>P</strong></td><td>Chrome拡張・Figmaプラグイン</td><td>1〜3h</td><td>2〜20万円</td><td>¥3,000〜¥40,000</td><td><span class='badge ok'>◎</span></td></tr><tr><td><strong>V</strong></td><td>GitHubボイラープレート販売</td><td>2〜5h</td><td>15〜150万円</td><td>¥5,000〜¥80,000</td><td><span class='badge ok'>◎</span></td></tr><tr><td><strong>Q</strong></td><td>Notionテンプレ×Etsy英語市場</td><td>2〜5h</td><td>4.5〜45万円</td><td>¥2,000〜¥20,000</td><td><span class='badge ok'>◎</span></td></tr><tr><td><strong>O</strong></td><td>Canva+Pinterest自動化</td><td>2〜4h</td><td>5〜21万円</td><td>¥2,500〜¥30,000</td><td><span class='badge ok'>◎</span></td></tr><tr><td><strong>M</strong></td><td>Pinterest×AI画像集客</td><td>2〜4h</td><td>6〜23万円</td><td>¥3,000〜¥20,000</td><td><span class='badge ok'>◎</span></td></tr><tr><td><strong>E</strong></td><td>テンプレート・教材販売</td><td>3〜8h</td><td>3〜40万円</td><td>¥2,000〜¥15,000</td><td><span class='badge ok'>◎</span></td></tr><tr><td><strong>R</strong></td><td>SaaSアフィリエイト特化ブログ</td><td>5〜10h</td><td>3〜30万円</td><td>¥1,500〜¥10,000</td><td><span class='badge ok'>◎</span></td></tr><tr><td><strong>T</strong></td><td>AIアバター動画（HeyGen等）</td><td>3〜6h</td><td>5〜25万円</td><td>¥2,000〜¥15,000</td><td><span class='badge ok'>◎</span></td></tr></tbody>
+        </table>
+        <p class="note">◎ = 特におすすめ（ストック型・低管理工数）。詳細は上記HTMLレポートを参照。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>一時停止中プロジェクト</h2>
+      <div class="body"><ul><li>バーコードスキャナー（scanner_barcodes）</li></ul></div>
+    </section>
+  </main>
+</body>
+</html>
