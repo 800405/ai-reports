@@ -126,6 +126,13 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
               <td><span class="badge muted">不明</span></td>
               <td>RSHTECH（深圳）</td>
             </tr>
+            <tr style="background:#f0fdf4">
+              <td><strong>サンワダイレクト 400-HUBC32GM</strong></td>
+              <td><span class="badge ok">良好</span></td>
+              <td>Amazon評価4.3（61件）。「Amazon おすすめ」バッジ。HDD認識安定・スイッチ便利との報告。安全性の問題報告なし</td>
+              <td><span class="badge muted">不明</span></td>
+              <td><span class="badge ok">国内大手</span> サンワサプライ（東証上場グループ）</td>
+            </tr>
           </tbody>
         </table>
 
@@ -138,6 +145,70 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
             <li>ROSONWAY/RSHTECHはAmazon販売歴が長く一定の実績あり</li>
             <li>atolla/JESWOは小規模メーカーだが重大事故の報告はなし</li>
           </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ユーザー提案製品の評価 -->
+    <section>
+      <h2>ユーザー提案製品の評価: サンワダイレクト 400-HUBC32GM</h2>
+      <div class="body">
+        <div class="product-grid">
+          <article class="product-card" style="border:2px solid #f59e0b;grid-column:1/-1">
+            <div><span class="badge warn">電力不足のため非推奨</span></div>
+            <h3>サンワダイレクト 400-HUBC32GM</h3>
+            <dl class="spec">
+              <dt>ブランド</dt><dd><strong>サンワサプライ（東証上場グループ・国内老舗メーカー）</strong></dd>
+              <dt>ポート数</dt><dd>7ポート（USB-C×2 + USB-A×5）</dd>
+              <dt>USB規格</dt><dd>USB 3.2 Gen1（5Gbps）</dd>
+              <dt>ACアダプタ</dt><dd><span class="badge todo">DC 5V/3A = 15W</span></dd>
+              <dt>充電規格</dt><dd>全ポートBC1.2対応（1ポート最大1.5A）</dd>
+              <dt>上流接続</dt><dd><span class="badge ok">USB-C</span>（Pi 4/5に最適）</dd>
+              <dt>スイッチ</dt><dd>全ポート個別ON/OFFスイッチ付き</dd>
+              <dt>筐体</dt><dd><span class="badge ok">アルミ</span></dd>
+              <dt>uhubctl</dt><dd><span class="badge warn">不明（コントローラチップ非公開）</span></dd>
+              <dt>サイズ</dt><dd>162×42×18mm / 約110g</dd>
+              <dt>Amazon評価</dt><dd>★4.3（61件）・「Amazon おすすめ」バッジ</dd>
+              <dt>価格</dt><dd><strong>¥5,280</strong>（サンワダイレクト直販価格）</dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B0DGPGL74L">B0DGPGL74L</a></dd>
+            </dl>
+
+            <div class="risk-box" style="margin-top:12px">
+              <h3>スマホ3台+SSD構成では電力不足</h3>
+              <table>
+                <thead><tr><th>構成</th><th>必要電力</th><th>AC出力</th><th>過不足</th><th>判定</th></tr></thead>
+                <tbody>
+                  <tr><td>スマホ3台（BC1.2 1.5A）+ SSD</td><td>27W</td><td>15W</td><td><strong>-12W</strong></td><td><span class="badge todo">不可</span></td></tr>
+                  <tr><td>スマホ3台（USB3.0 0.9A）+ SSD</td><td>18W</td><td>15W</td><td><strong>-3W</strong></td><td><span class="badge todo">不足</span></td></tr>
+                  <tr><td>スマホ2台（BC1.2）+ SSD</td><td>19.5W</td><td>15W</td><td><strong>-4.5W</strong></td><td><span class="badge todo">不足</span></td></tr>
+                  <tr><td>スマホ1台（BC1.2）+ SSD</td><td>12W</td><td>15W</td><td>+3W</td><td><span class="badge ok">OK</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="tip-box" style="margin-top:12px">
+              <h3>RSH-A37Sとの比較（アダプタ交換の可否）</h3>
+              <p>RSH-A37Sは<strong>12V DCバレルジャック</strong>なので社外12V/5Aアダプタに交換して60W化が可能（非公式）。一方、400-HUBC32GMは<strong>5V直接給電</strong>のため、アダプタ交換で大幅なワット数アップができません。電力拡張性の面でもRSH-A37Sが優位です。</p>
+            </div>
+
+            <h3 style="margin-top:16px">総合評価</h3>
+            <table>
+              <thead><tr><th>評価項目</th><th>スコア</th><th>コメント</th></tr></thead>
+              <tbody>
+                <tr><td>ブランド信頼性</td><td><span class="badge ok">★★★★★</span></td><td>全候補中最高。国内上場グループ・長年の実績</td></tr>
+                <tr><td>安全性</td><td><span class="badge ok">★★★★★</span></td><td>問題報告なし・国内ブランドの品質管理</td></tr>
+                <tr><td>機能性</td><td><span class="badge ok">★★★★</span></td><td>USB-C×2下流・BC1.2全ポート・個別スイッチ</td></tr>
+                <tr><td>電力</td><td><span class="badge todo">★☆☆☆☆</span></td><td>15Wはスマホ3台+SSDに致命的に不足</td></tr>
+                <tr><td>コスパ</td><td><span class="badge warn">★★☆☆☆</span></td><td>¥5,280で予算超過。15W/¥5,280 vs RSH-A37S 24W/¥2,700</td></tr>
+                <tr><td>uhubctl</td><td><span class="badge warn">★★☆☆☆</span></td><td>コントローラチップ不明・対応は期待薄</td></tr>
+              </tbody>
+            </table>
+
+            <div class="verdict" style="border-color:#f59e0b;background:#fffbeb;margin-top:12px">
+              <h3 style="color:#b45309">結論: 良い製品だが今回の用途には合わない</h3>
+              <p>サンワサプライの製品品質・ブランド信頼性は全候補中最高です。スマホ1台+SSD程度の軽い構成なら安心して使えます。しかし<strong>スマホ3台+SSDの構成では15Wが致命的に不足</strong>し、5Vアダプタのため電力拡張も困難です。予算も¥5,280で超過。今回の要件では<strong>JESWO 11ポート（36W/¥3,689）</strong>や<strong>RSH-A37S（24W→60W化/¥4,200）</strong>の方が適しています。</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -604,6 +675,7 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
             <tr style="background:#fffbeb"><td><strong>UGREEN 7ポート</strong></td><td>約3,824円</td><td>24W</td><td><span class="badge warn">ギリギリ</span></td><td><span class="badge ok">余裕</span></td><td><span class="badge warn">未確認</span></td></tr>
             <tr style="background:#fffbeb"><td><strong>atolla 7+1ポート</strong></td><td>約3,200円</td><td>20W</td><td><span class="badge warn">不足気味</span></td><td><span class="badge ok">OK</span></td><td><span class="badge warn">未確認</span></td></tr>
             <tr style="background:#fef2f2"><td><strong>RSH-ST07C</strong></td><td>約3,500円</td><td>15W</td><td><span class="badge todo">不足</span></td><td><span class="badge warn">ギリギリ</span></td><td><span class="badge warn">4/7のみ</span></td></tr>
+            <tr style="background:#fef2f2"><td><strong>サンワダイレクト 400-HUBC32GM</strong></td><td>¥5,280</td><td>15W</td><td><span class="badge todo">不足</span></td><td><span class="badge warn">ギリギリ</span></td><td><span class="badge warn">不明</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -871,6 +943,9 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
           <li><strong>[tool]</strong> <a href="https://sakura-checker.jp/">サクラチェッカー</a> &mdash; USBハブカテゴリの55%以上がサクラ商品との分析</li>
           <li><strong>[review]</strong> <a href="https://curious-review.com/atolla-kaisya/">atolla会社調査レビュー</a></li>
           <li><strong>[review]</strong> <a href="https://electronikz.com/products/jeswo-11-port-usb-hub-review">JESWO 11ポートUSBハブ レビュー</a></li>
+          <li><strong>[official]</strong> <a href="https://direct.sanwa.co.jp/ItemPage/400-HUBC32GM">サンワダイレクト 400-HUBC32GM 製品ページ</a> &mdash; DC5V/3A（15W）ACアダプタ、BC1.2全ポート対応</li>
+          <li><strong>[review]</strong> <a href="https://win-tab.net/acc/sanwa_400_hubc32gm_2409181/">ウインタブ - 400-HUBC32GM/400-HUBA32GM レビュー</a></li>
+          <li><strong>[price]</strong> <a href="https://kakaku.com/item/K0001653108/">価格.com - サンワサプライ 400-HUBC32GM</a></li>
         </ul>
       </div>
     </section>
