@@ -417,6 +417,21 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
           </article>
 
           <article class="product-card">
+            <div><span class="badge info">全ポート10Gbps・24W</span></div>
+            <h3>RSHTECH RSH-A107</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（USB 3.2 Gen2 Type-A）</dd>
+              <dt>ACアダプタ</dt><dd>24W（12V/2A）付属</dd>
+              <dt>uhubctl</dt><dd><span class="badge ok">対応見込み（VIA Labs系）</span></dd>
+              <dt>筐体</dt><dd><span class="badge ok">アルミ</span></dd>
+              <dt>速度</dt><dd><strong>全ポート10Gbps</strong></dd>
+              <dt>価格</dt><dd><strong>約4,000〜5,000円</strong></dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B0BRXJ3RDV">B0BRXJ3RDV</a></dd>
+            </dl>
+            <p class="note">RSH-A37Sの10Gbps版。全ポート10Gbpsで24Wアダプタ付属。SSD転送速度を重視するなら最適。2-in-1ケーブル（USB-C/A両対応）。価格が5,000円ギリギリだがタイミングにより予算内。</p>
+          </article>
+
+          <article class="product-card">
             <div><span class="badge info">10Gbps + Type-C</span></div>
             <h3>RSHTECH RSH-ST07C</h3>
             <dl class="spec">
@@ -432,12 +447,64 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
           </article>
         </div>
 
-        <h3>5,000円以下の製品 電力比較</h3>
+        <h3>uhubctl不問なら: 電力重視の低価格モデル</h3>
+        <p>uhubctlソフトウェア制御を諦め、物理スイッチでの手動ON/OFFでOKなら、電力が大きい以下の製品も候補になります。</p>
+        <div class="product-grid">
+          <article class="product-card">
+            <div><span class="badge warn">uhubctl未確認・電力◎</span></div>
+            <h3>atolla 7+4ポート（48W版）</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（データ）+ 4ポート（充電専用）</dd>
+              <dt>ACアダプタ</dt><dd><strong>48W（12V/4A）</strong>付属</dd>
+              <dt>uhubctl</dt><dd><span class="badge warn">未確認</span></dd>
+              <dt>筐体</dt><dd>プラスチック</dd>
+              <dt>スイッチ</dt><dd>個別ON/OFFスイッチ付き</dd>
+              <dt>価格</dt><dd><strong>約4,200〜4,500円</strong></dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B07CP39CYV">B07CP39CYV</a></dd>
+            </dl>
+            <p class="note">48Wで電力は十分（余力+25.5W）。充電専用ポートにスマホを繋げば急速充電も可能。uhubctlが不要なら予算内で電力最強。</p>
+          </article>
+
+          <article class="product-card">
+            <div><span class="badge warn">uhubctl未確認・36W</span></div>
+            <h3>JESWO 11ポート（36W）</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（データ）+ 4ポート（充電専用）</dd>
+              <dt>ACアダプタ</dt><dd><strong>36W（12V/3A）</strong>付属</dd>
+              <dt>uhubctl</dt><dd><span class="badge warn">未確認</span></dd>
+              <dt>筐体</dt><dd>プラスチック</dd>
+              <dt>価格</dt><dd><strong>約3,689円</strong>（26%オフセール）</dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B0C2YD1SK9">B0C2YD1SK9</a></dd>
+            </dl>
+            <p class="note">36Wで3台+SSDに余力あり（+13.5W）。11ポートだが安くて電力十分。uhubctlソフト制御は未確認。</p>
+          </article>
+
+          <article class="product-card">
+            <div><span class="badge warn">uhubctl未確認・アルミ</span></div>
+            <h3>UGREEN 7ポート（24W）</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（USB 3.0 Type-A）</dd>
+              <dt>ACアダプタ</dt><dd>24W（12V/2A）付属</dd>
+              <dt>uhubctl</dt><dd><span class="badge warn">未確認</span></dd>
+              <dt>筐体</dt><dd><span class="badge ok">アルミ</span></dd>
+              <dt>スイッチ</dt><dd>個別ON/OFFスイッチ付き</dd>
+              <dt>価格</dt><dd><strong>約3,824円</strong>（セール時）</dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B09DCK46PM">B09DCK46PM</a></dd>
+            </dl>
+            <p class="note">RSH-A37Sとほぼ同スペック（24W・アルミ・7ポート）。uhubctlが確認されていない分、RSH-A37Sの方が確実。</p>
+          </article>
+        </div>
+
+        <h3>5,000円以下の製品 電力比較（全製品）</h3>
         <table>
           <thead><tr><th>製品</th><th>価格</th><th>電力</th><th>スマホ3台+SSD</th><th>スマホ2台+SSD</th><th>uhubctl</th></tr></thead>
           <tbody>
             <tr style="background:#f0fdf4"><td><strong>RSH-A37S + 社外60Wアダプタ</strong></td><td>約4,200円</td><td>60W</td><td><span class="badge ok">余裕</span></td><td><span class="badge ok">余裕</span></td><td><span class="badge ok">対応</span></td></tr>
+            <tr style="background:#eff6ff"><td><strong>atolla 48W版（7+4）</strong></td><td>約4,200円</td><td>48W</td><td><span class="badge ok">余裕</span></td><td><span class="badge ok">余裕</span></td><td><span class="badge warn">未確認</span></td></tr>
+            <tr style="background:#eff6ff"><td><strong>JESWO 11ポート</strong></td><td>約3,689円</td><td>36W</td><td><span class="badge ok">余裕</span></td><td><span class="badge ok">余裕</span></td><td><span class="badge warn">未確認</span></td></tr>
             <tr style="background:#fffbeb"><td><strong>RSH-A37S（付属アダプタ）</strong></td><td>約2,700円</td><td>24W</td><td><span class="badge warn">ギリギリ</span></td><td><span class="badge ok">余裕</span></td><td><span class="badge ok">対応</span></td></tr>
+            <tr style="background:#fffbeb"><td><strong>RSH-A107（全ポート10Gbps）</strong></td><td>約4,000〜5,000円</td><td>24W</td><td><span class="badge warn">ギリギリ</span></td><td><span class="badge ok">余裕</span></td><td><span class="badge ok">対応見込み</span></td></tr>
+            <tr style="background:#fffbeb"><td><strong>UGREEN 7ポート</strong></td><td>約3,824円</td><td>24W</td><td><span class="badge warn">ギリギリ</span></td><td><span class="badge ok">余裕</span></td><td><span class="badge warn">未確認</span></td></tr>
             <tr style="background:#fffbeb"><td><strong>atolla 7+1ポート</strong></td><td>約3,200円</td><td>20W</td><td><span class="badge warn">不足気味</span></td><td><span class="badge ok">OK</span></td><td><span class="badge warn">未確認</span></td></tr>
             <tr style="background:#fef2f2"><td><strong>RSH-ST07C</strong></td><td>約3,500円</td><td>15W</td><td><span class="badge todo">不足</span></td><td><span class="badge warn">ギリギリ</span></td><td><span class="badge warn">4/7のみ</span></td></tr>
           </tbody>
