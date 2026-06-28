@@ -49,9 +49,9 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
 
     <!-- サマリー -->
     <div class="cards">
-      <div class="card"><strong>20件</strong><span class="label">検証済みファクト（32件中）</span></div>
-      <div class="card"><strong>20ソース</strong><span class="label">調査対象（5角度）</span></div>
-      <div class="card"><strong>500mA</strong><span class="label">USB 2.0標準ポート上限</span></div>
+      <div class="card"><strong>Rosonway</strong><span class="label">おすすめメーカー</span></div>
+      <div class="card"><strong>uhubctl</strong><span class="label">ポートON/OFF制御ツール</span></div>
+      <div class="card"><strong>900mA</strong><span class="label">USB 3.0ポート上限</span></div>
       <div class="card"><strong>要注意</strong><span class="label">バックフィード（逆流給電）</span></div>
     </div>
 
@@ -60,19 +60,19 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
       <h2>結論・おすすめ構成</h2>
       <div class="body">
         <div class="verdict">
-          <h3>実現可能だが制約あり</h3>
-          <p>セルフパワーUSBハブ経由でスマホへ給電しながらデータ通信する構成は<strong>技術的に実現可能</strong>です。ただし以下の制約があります:</p>
-          <ul>
-            <li><strong>USB 2.0ハブの標準ポートは500mAまで</strong> &mdash; スマホの充電には不足する場合がある</li>
-            <li><strong>1A以上の給電</strong>にはUSB BC 1.2対応ハブ、充電専用ポート付きハブ、またはUSB 3.0ハブ（900mA）が必要</li>
-            <li><strong>バックフィード（逆流給電）</strong>でRaspberry Pi本体が損傷するリスクがある（特にPi 3B以前）</li>
-          </ul>
+          <h3>Rosonway RSH-A37S が最有力候補</h3>
+          <p>要件「セルフパワー + ACアダプタ付き + 4ポート以上 + ポートON/OFF制御 + 日本で購入可能」を<strong>すべて満たす製品</strong>は限られますが、以下の3製品が条件に合致します:</p>
+          <ol>
+            <li><strong>Rosonway RSH-A37S</strong> &mdash; 7ポート / USB 3.0 / 約3,200円 / Amazon.co.jp購入可</li>
+            <li><strong>Rosonway RSH-A10</strong> &mdash; 10ポート / USB 3.0 / 約3,500〜4,500円 / Amazon.co.jp購入可</li>
+            <li><strong>Plugable USBC-HUB7BC</strong> &mdash; 7ポート / USB 3.0 / 約6,000〜8,000円 / USB-C接続</li>
+          </ol>
         </div>
         <div class="tip-box">
           <h3>おすすめの実践構成</h3>
           <ol>
             <li><strong>Pi 4B/5を使用</strong>（バックフィード保護が改善されている）</li>
-            <li><strong>バックフィードしないセルフパワーハブを選定</strong>（Plugable USB2-HUB-AG7等）、またはデータ専用USBケーブルで接続</li>
+            <li><strong>uhubctl対応セルフパワーハブを選定</strong>（Rosonway RSH-A37S等）</li>
             <li><strong>uhubctlでポート電源を制御</strong>（<code>sudo apt install uhubctl</code>）</li>
             <li>スマホ側で<strong>USBデバッグ（ADB）</strong>またはUSBテザリングを有効にしてデータ通信を確保</li>
           </ol>
@@ -97,68 +97,178 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
       </div>
     </section>
 
-    <!-- 動作実績のある製品 -->
+    <!-- 製品比較表 -->
     <section>
-      <h2>Raspberry Pi動作実績のある製品</h2>
+      <h2>製品比較表（ポートON/OFF対応・セルフパワー・日本購入可）</h2>
+      <div class="body">
+        <p>uhubctl互換性リストとAmazon.co.jpの在庫を調査し、<strong>全5条件</strong>（4ポート以上 / ポート個別ON/OFF / ACアダプタ付き / 日本で購入可 / Linux対応）を満たす製品を選定しました。</p>
+
+        <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>推奨</th>
+              <th>製品名</th>
+              <th>ポート数</th>
+              <th>USB</th>
+              <th>ACアダプタ</th>
+              <th>ポートON/OFF</th>
+              <th>uhubctl VID:PID</th>
+              <th>価格（税込目安）</th>
+              <th>Amazon ASIN</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#f0fdf4">
+              <td><span class="badge ok">1位</span></td>
+              <td><strong>Rosonway RSH-A37S</strong></td>
+              <td>7</td>
+              <td>3.0</td>
+              <td>12V/2A (24W)</td>
+              <td><span class="badge ok">個別対応</span></td>
+              <td>2109:2822</td>
+              <td>約3,200円</td>
+              <td><a href="https://www.amazon.co.jp/dp/B087X2F876">B087X2F876</a></td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td><span class="badge ok">2位</span></td>
+              <td><strong>Rosonway RSH-A10</strong></td>
+              <td>10</td>
+              <td>3.0</td>
+              <td>12V/3A (36W)</td>
+              <td><span class="badge ok">個別対応</span></td>
+              <td>0BDA:0411</td>
+              <td>約3,500〜4,500円</td>
+              <td><a href="https://www.amazon.co.jp/dp/B081H153FY">B081H153FY</a></td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td><span class="badge ok">3位</span></td>
+              <td><strong>Plugable USBC-HUB7BC</strong></td>
+              <td>7</td>
+              <td>3.0</td>
+              <td>60W</td>
+              <td><span class="badge ok">6/7ポート対応</span></td>
+              <td>2109:0817</td>
+              <td>約6,000〜8,000円</td>
+              <td><a href="https://www.amazon.co.jp/dp/B096YKDYX5">B096YKDYX5</a></td>
+            </tr>
+            <tr>
+              <td><span class="badge info">候補</span></td>
+              <td>Rosonway RSH-A13</td>
+              <td>13</td>
+              <td>3.0</td>
+              <td>12V/6A (72W)</td>
+              <td><span class="badge ok">個別対応</span></td>
+              <td>2109:2822</td>
+              <td>約5,500〜7,000円</td>
+              <td><a href="https://www.amazon.co.jp/dp/B0B9S1CW2S">B0B9S1CW2S</a></td>
+            </tr>
+            <tr>
+              <td><span class="badge info">候補</span></td>
+              <td>Rosonway RSH-A16</td>
+              <td>16</td>
+              <td>3.0</td>
+              <td>12V/8.3A (100W)</td>
+              <td><span class="badge ok">個別対応</span></td>
+              <td>0BDA:0411</td>
+              <td>約6,000〜8,000円</td>
+              <td><a href="https://www.amazon.co.jp/dp/B08HHZQ728">B08HHZQ728</a></td>
+            </tr>
+            <tr>
+              <td><span class="badge info">候補</span></td>
+              <td>Rosonway RSH-518C</td>
+              <td>7</td>
+              <td>3.0</td>
+              <td>付属</td>
+              <td><span class="badge ok">個別対応</span></td>
+              <td>2109:0817</td>
+              <td>約3,500〜5,000円</td>
+              <td>Amazon.co.jpで検索</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="note">uhubctl互換性リストおよびGitHub Issues (#14, #276, #601等) に基づく。USB 3.0ハブの各ポート最大給電は900mA。</p>
+      </div>
+    </section>
+
+    <!-- おすすめ製品の詳細 -->
+    <section>
+      <h2>おすすめ製品の詳細</h2>
       <div class="body">
         <div class="product-grid">
           <article class="product-card">
-            <div><span class="badge ok">動作確認済み</span> <span class="badge info">バックフィードなし</span></div>
-            <h3>Plugable USB2-HUB-AG7</h3>
+            <div><span class="badge ok">1位: コスパ最強</span></div>
+            <h3>Rosonway RSH-A37S</h3>
             <dl class="spec">
-              <dt>ポート数</dt><dd>7ポート（USB 2.0）</dd>
-              <dt>ACアダプタ</dt><dd>5V / 3A</dd>
-              <dt>各ポート最大</dt><dd>500mA</dd>
-              <dt>バックフィード</dt><dd>なし（実測確認済み）</dd>
-              <dt>互換性</dt><dd>eLinux.org掲載、Plugable社がRPiテスト実施</dd>
-              <dt>注意点</dt><dd>Plugable社が「iPhoneやiPad等への十分な給電は不可」と明記</dd>
+              <dt>ポート数</dt><dd>7ポート（USB 3.0 Type-A）</dd>
+              <dt>ACアダプタ</dt><dd>12V / 2A（24W）付属</dd>
+              <dt>各ポート最大</dt><dd>900mA（USB 3.0規格）</dd>
+              <dt>ポートON/OFF</dt><dd>uhubctl対応（VIA Labs 2109:2822）</dd>
+              <dt>筐体</dt><dd>アルミニウム</dd>
+              <dt>給電方式</dt><dd>セルフパワー / バスパワー両対応</dd>
+              <dt>Amazon ASIN</dt><dd><a href="https://www.amazon.co.jp/dp/B087X2F876">B087X2F876</a></dd>
+              <dt>価格</dt><dd>約3,200円</dd>
             </dl>
-            <p class="note">Plugable社自身がRaspberry Piでの動作テストを実施。Mini-Bアップストリームポートがバックフィードしないことが実測で確認されている最も安全な選択肢。</p>
+            <p class="note">最もコスパが良い選択肢。7ポートすべてuhubctlで個別電源制御可能。アルミ筐体で放熱性も良好。Amazon.co.jpで購入可。</p>
           </article>
 
           <article class="product-card">
-            <div><span class="badge ok">動作確認済み</span> <span class="badge warn">専用設計</span></div>
-            <h3>Pimoroni PiHub</h3>
+            <div><span class="badge ok">2位: 多ポート</span></div>
+            <h3>Rosonway RSH-A10</h3>
             <dl class="spec">
-              <dt>ポート数</dt><dd>4ポート（USB 2.0）</dd>
-              <dt>ACアダプタ</dt><dd>5.2V / 3A（電圧降下対策で高め）</dd>
-              <dt>給電ポート</dt><dd>1ポートが1A専用（Piへの給電用）</dd>
-              <dt>付属品</dt><dd>USB A-Bケーブル、ACアダプタ</dd>
-              <dt>Amazon</dt><dd>B00FE8AVMU</dd>
-              <dt>注意点</dt><dd>2013年発売、生産終了の可能性大</dd>
+              <dt>ポート数</dt><dd>10ポート（USB 3.0 Type-A）</dd>
+              <dt>ACアダプタ</dt><dd>12V / 3A（36W）付属</dd>
+              <dt>各ポート最大</dt><dd>900mA（USB 3.0規格）</dd>
+              <dt>ポートON/OFF</dt><dd>uhubctl対応（Realtek 0BDA:0411）</dd>
+              <dt>筐体</dt><dd>アルミニウム / 個別物理スイッチ付き</dd>
+              <dt>Amazon ASIN</dt><dd><a href="https://www.amazon.co.jp/dp/B081H153FY">B081H153FY</a></dd>
+              <dt>価格</dt><dd>約3,500〜4,500円</dd>
             </dl>
-            <p class="note">Raspberry Pi専用設計。eLinux.org互換性リストに掲載。ただし2013年発売のため2026年現在の入手性は限定的。</p>
+            <p class="note">スマホ以外にも複数デバイスを接続したい場合に最適。物理スイッチ+ソフトウェア制御の両方が使える。</p>
           </article>
 
           <article class="product-card">
-            <div><span class="badge warn">リビジョン注意</span></div>
-            <h3>D-Link DUB-H7</h3>
+            <div><span class="badge ok">3位: USB-C接続</span></div>
+            <h3>Plugable USBC-HUB7BC</h3>
             <dl class="spec">
-              <dt>ポート数</dt><dd>7ポート（USB 2.0）</dd>
-              <dt>Rev B</dt><dd><span class="badge ok">完全動作</span></dd>
-              <dt>Rev C</dt><dd><span class="badge todo">使用不可</span> USBスタック/カーネルをクラッシュ</dd>
-              <dt>Rev D/E</dt><dd><span class="badge ok">対応</span></dd>
+              <dt>ポート数</dt><dd>7ポート（USB 3.0）</dd>
+              <dt>ACアダプタ</dt><dd>60W付属</dd>
+              <dt>ポートON/OFF</dt><dd>uhubctl対応（6/7ポート制御可）</dd>
+              <dt>ホスト接続</dt><dd>USB-C（Pi 4/5のUSB-Cポートに最適）</dd>
+              <dt>ブランド</dt><dd>Plugable（RPi互換性テスト実績あり）</dd>
+              <dt>Amazon ASIN</dt><dd><a href="https://www.amazon.co.jp/dp/B096YKDYX5">B096YKDYX5</a></td>
+              <dt>価格</dt><dd>約6,000〜8,000円</dd>
             </dl>
-            <p class="note">同一製品名でもハードウェアリビジョンで互換性が大きく変わる代表例。購入前にリビジョンを確認してください。</p>
-          </article>
-
-          <article class="product-card">
-            <div><span class="badge warn">検証で否定</span></div>
-            <h3>ELECOM U3H-T410SWH</h3>
-            <dl class="spec">
-              <dt>ポート数</dt><dd>4ポート（USB 3.0）</dd>
-              <dt>ACアダプタ</dt><dd>5V / 4A</dd>
-              <dt>各ポート最大</dt><dd>900mA</dd>
-              <dt>ラズパイ推奨</dt><dd><span class="badge todo">未確認</span> ブログの推奨は検証で否定</dd>
-            </dl>
-            <p class="note">一部ブログで「ラズパイ推奨」とされていたが、本調査の3票制検証（1-2）で否定。USB 3.0ハブのラズパイ互換性情報は全体的に不足しています。</p>
+            <p class="note">USB-C接続でPi 4/5に最適。60Wの強力な電源で安定給電。Plugable社はRPiとの互換性テストを自社で実施している信頼性の高いブランド。</p>
           </article>
         </div>
+      </div>
+    </section>
+
+    <!-- 条件を満たさない製品 -->
+    <section>
+      <h2>条件を満たさない製品（参考）</h2>
+      <div class="body">
+        <table>
+          <thead><tr><th>製品</th><th>ポート</th><th>ポートON/OFF</th><th>不適格の理由</th></tr></thead>
+          <tbody>
+            <tr><td>Anker A7516 Ultra Slim</td><td>4</td><td><span class="badge ok">対応</span></td><td><span class="badge todo">バスパワーのみ</span> ACアダプタなし。スマホ給電に不十分</td></tr>
+            <tr><td>StarTech HB30A4AIB</td><td>4</td><td><span class="badge ok">対応</span></td><td><span class="badge todo">バスパワーのみ</span> ACアダプタなし</td></tr>
+            <tr><td>Rosonway RSH-A104</td><td>4</td><td><span class="badge warn">USB 2.0のみ</span></td><td>USB 3.0側ではポート制御不可</td></tr>
+            <tr><td>Inateck HB2025A</td><td>4</td><td><span class="badge warn">USB 2.0のみ</span></td><td>USB 3.0側ではポート制御不可</td></tr>
+            <tr><td>D-Link DUB-H4/H7</td><td>4/7</td><td><span class="badge ok">対応</span></td><td><span class="badge muted">生産終了</span> 入手困難</td></tr>
+            <tr><td>UUGear MEGA4</td><td>4</td><td><span class="badge ok">対応</span></td><td><span class="badge warn">海外通販のみ</span> Amazon.co.jp取扱いなし</td></tr>
+            <tr><td>AmazonBasics HU3770V1</td><td>7</td><td><span class="badge ok">対応</span></td><td><span class="badge muted">生産終了</span> 入手困難</td></tr>
+          </tbody>
+        </table>
+        <p class="note">uhubctlでポートON/OFFは可能だが、セルフパワー+日本購入可の条件を満たさない製品。</p>
 
         <p style="margin-top:16px"><strong>製品選定の参考リスト:</strong></p>
         <ul>
-          <li><a href="https://elinux.org/RPi_Powered_USB_Hubs">eLinux.org - RPi Powered USB Hubs</a> &mdash; コミュニティ管理の互換性リスト（最も包括的）</li>
           <li><a href="https://github.com/mvp/uhubctl">uhubctl 互換性リスト</a> &mdash; 100以上のUSBハブモデルのポート電源制御対応状況</li>
+          <li><a href="https://elinux.org/RPi_Powered_USB_Hubs">eLinux.org - RPi Powered USB Hubs</a> &mdash; コミュニティ管理の互換性リスト</li>
+          <li><a href="https://github.com/mvp/uhubctl/issues/14">uhubctl Issue #14</a> &mdash; 「購入しやすいPPPS対応ハブ」のディスカッション</li>
         </ul>
       </div>
     </section>
