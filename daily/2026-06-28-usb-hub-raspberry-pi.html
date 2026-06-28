@@ -60,16 +60,52 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
       <h2>結論・おすすめ構成</h2>
       <div class="body">
         <div class="verdict">
-          <h3>RSHTECH RSH-ST10C-6 が総合1位（スマホ3台+SSD構成）</h3>
-          <p>60W以上・uhubctl対応・日本購入可の全条件を満たす<strong>5製品</strong>を特定。USB 3.2 Gen2（10Gbps）、Type-C下流ポート、アルミ筐体の観点を加えて選定し直しました。</p>
-          <ol>
-            <li><strong>RSHTECH RSH-ST10C-6</strong> &mdash; 10ポート / 60W / <strong>10Gbps + Type-C下流 + アルミ</strong> <span class="badge ok">総合最強</span></li>
-            <li><strong>Rosonway RSH-A16</strong> &mdash; 16ポート / <strong>100W</strong> / アルミ / PSE認証 <span class="badge ok">電力最強</span></li>
-            <li><strong>Rosonway RSH-A13</strong> &mdash; 13ポート / 72W / <strong>全ポート10Gbps</strong> / アルミ <span class="badge ok">速度最強</span></li>
-            <li><strong>Plugable USBC-HUB7BC</strong> &mdash; 7ポート / 60W / RPi互換テスト済み <span class="badge info">信頼性</span></li>
-            <li><strong>Plugable USB3-HUB7BC</strong> &mdash; 7ポート / 60W / 長期動作実績 <span class="badge info">実績</span></li>
-          </ol>
+          <h3>8ポート以下で全条件を満たすのは Plugable 2機種のみ</h3>
+          <p>60W以上・uhubctl対応・8ポート以下・日本購入可の全条件を満たす製品を徹底調査した結果、<strong>該当はPlugable 2機種だけ</strong>でした。Rosonway/RSHTECHはuhubctl対応チップを使っていますが、8ポート以下モデルには24W以下のアダプタしか付属しません。</p>
         </div>
+        <div class="risk-box" style="border-left-color:#f59e0b;background:#fffbeb">
+          <h3 style="color:#b45309">なぜ8ポート以下 + 60W以上の選択肢が少ないのか</h3>
+          <p>メーカーはポート数に応じてアダプタ容量を決めるため、4〜8ポートモデルには10〜36Wのアダプタしか付属しません。60W以上のアダプタが付くのは10ポート以上のモデルだけです。Plugableは例外的に7ポートで60Wアダプタを付属させています。</p>
+        </div>
+
+        <h3>選択肢の全体像</h3>
+        <table>
+          <thead><tr><th>方針</th><th>製品</th><th>ポート</th><th>電力</th><th>メリット</th><th>デメリット</th></tr></thead>
+          <tbody>
+            <tr style="background:#f0fdf4">
+              <td><span class="badge ok">A: 8ポート以下で確実</span></td>
+              <td><strong>Plugable USBC-HUB7BC</strong></td>
+              <td>7</td>
+              <td>60W</td>
+              <td>全条件クリア、RPi実績</td>
+              <td>5Gbps、プラスチック筐体</td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td><span class="badge ok">A: 8ポート以下で確実</span></td>
+              <td><strong>Plugable USB3-HUB7BC</strong></td>
+              <td>7</td>
+              <td>60W</td>
+              <td>全条件クリア、長期実績</td>
+              <td>5Gbps、プラスチック、Type-Cなし</td>
+            </tr>
+            <tr style="background:#eff6ff">
+              <td><span class="badge info">B: 10ポートを許容</span></td>
+              <td><strong>RSHTECH RSH-ST10C-6</strong></td>
+              <td>10</td>
+              <td>60W</td>
+              <td>10Gbps、Type-C下流、アルミ</td>
+              <td>8ポート超</td>
+            </tr>
+            <tr style="background:#fffbeb">
+              <td><span class="badge warn">C: アダプタ自前交換</span></td>
+              <td><strong>Rosonway RSH-A37S + 社外60Wアダプタ</strong></td>
+              <td>7</td>
+              <td>24W→60W</td>
+              <td>アルミ、安い、uhubctl対応</td>
+              <td>非公式改造、自己責任</td>
+            </tr>
+          </tbody>
+        </table>
 
         <h3>電力バジェット計算</h3>
         <table>
@@ -83,26 +119,42 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
           </tbody>
         </table>
 
+        <h3>8ポート以下の製品 電力判定</h3>
         <table style="margin-top:12px">
-          <thead><tr><th>製品</th><th>ACアダプタ</th><th>余力</th><th>判定</th></tr></thead>
+          <thead><tr><th>製品</th><th>ポート</th><th>ACアダプタ</th><th>余力</th><th>判定</th></tr></thead>
           <tbody>
-            <tr style="background:#f0fdf4"><td><strong>RSHTECH RSH-ST10C-6</strong></td><td>60W</td><td>+37.5W</td><td><span class="badge ok">十分 + 10Gbps + Type-C</span></td></tr>
-            <tr style="background:#f0fdf4"><td><strong>Rosonway RSH-A16</strong></td><td>100W</td><td>+77.5W</td><td><span class="badge ok">電力余裕が圧倒的</span></td></tr>
-            <tr style="background:#f0fdf4"><td><strong>Rosonway RSH-A13</strong></td><td>72W</td><td>+49.5W</td><td><span class="badge ok">十分 + 全ポート10Gbps</span></td></tr>
-            <tr style="background:#f0fdf4"><td><strong>Plugable USBC-HUB7BC</strong></td><td>60W</td><td>+37.5W</td><td><span class="badge ok">十分 + RPi実績No.1</span></td></tr>
-            <tr style="background:#f0fdf4"><td><strong>Plugable USB3-HUB7BC</strong></td><td>60W</td><td>+37.5W</td><td><span class="badge ok">十分 + 長期実績</span></td></tr>
+            <tr style="background:#f0fdf4"><td><strong>Plugable USBC-HUB7BC</strong></td><td>7</td><td>60W</td><td>+37.5W</td><td><span class="badge ok">十分・RPi実績No.1</span></td></tr>
+            <tr style="background:#f0fdf4"><td><strong>Plugable USB3-HUB7BC</strong></td><td>7</td><td>60W</td><td>+37.5W</td><td><span class="badge ok">十分・長期実績</span></td></tr>
+            <tr style="background:#fffbeb"><td>Rosonway RSH-A37S（アダプタ交換時）</td><td>7</td><td>24W→60W</td><td>+37.5W</td><td><span class="badge warn">非公式・自己責任</span></td></tr>
+            <tr style="background:#fef2f2"><td><del>Rosonway RSH-A37S（付属品のまま）</del></td><td>7</td><td>24W</td><td>+1.5W</td><td><span class="badge todo">電力不足</span></td></tr>
+            <tr style="background:#fef2f2"><td><del>Rosonway RSH-518C</del></td><td>7</td><td>10W</td><td>不足</td><td><span class="badge todo">電力不足</span></td></tr>
+            <tr style="background:#fef2f2"><td><del>AmazonBasics HU9003V1EBL</del></td><td>7</td><td>36W</td><td>+13.5W</td><td><span class="badge warn">日本入手性不明</span></td></tr>
+          </tbody>
+        </table>
+
+        <h3>参考: 8ポート超の有力製品</h3>
+        <table>
+          <thead><tr><th>製品</th><th>ポート</th><th>ACアダプタ</th><th>余力</th><th>特徴</th></tr></thead>
+          <tbody>
+            <tr><td><strong>RSHTECH RSH-ST10C-6</strong></td><td>10</td><td>60W</td><td>+37.5W</td><td>10Gbps + Type-C下流 + アルミ</td></tr>
+            <tr><td><strong>Rosonway RSH-A13</strong></td><td>13</td><td>72W</td><td>+49.5W</td><td>全ポート10Gbps + アルミ</td></tr>
+            <tr><td><strong>Rosonway RSH-A16</strong></td><td>16</td><td>100W</td><td>+77.5W</td><td>電力最強 + PSE認証 + アルミ</td></tr>
           </tbody>
         </table>
 
         <div class="tip-box">
           <h3>おすすめの実践構成（スマホ3台+SSD）</h3>
+          <p><strong>8ポート以下にこだわるなら:</strong></p>
           <ol>
-            <li><strong>Pi 4B/5を使用</strong>（バックフィード保護が改善されている）</li>
-            <li><strong>RSHTECH RSH-ST10C-6</strong>（総合）or <strong>Rosonway RSH-A16</strong>（電力重視）を選定</li>
-            <li><strong>SSDは10Gbpsポートに接続</strong>（RSH-ST10C-6/RSH-A13なら転送速度を最大化）</li>
-            <li><strong>Type-Cスマホ</strong>はRSH-ST10C-6のType-Cポートに直結（変換アダプタ不要）</li>
+            <li><strong>Plugable USBC-HUB7BC</strong> を選定（8ポート以下で唯一の60W+uhubctl製品）</li>
+            <li><strong>Pi 4B/5にUSB-Cで接続</strong></li>
             <li><strong>uhubctlでポート電源を個別制御</strong>（<code>sudo apt install uhubctl</code>）</li>
-            <li>スマホ側で<strong>USBデバッグ（ADB）</strong>またはUSBテザリングを有効化</li>
+          </ol>
+          <p><strong>8ポート超を許容できるなら:</strong></p>
+          <ol>
+            <li><strong>RSHTECH RSH-ST10C-6</strong>（10ポート / 10Gbps / Type-C下流 / アルミ）が総合最強</li>
+            <li>SSDは10Gbpsポートに接続して転送速度を最大化</li>
+            <li>Type-CスマホはType-Cポートに直結（変換アダプタ不要）</li>
           </ol>
         </div>
       </div>
@@ -243,119 +295,46 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
       </div>
     </section>
 
-    <!-- 60W以上製品 詳細比較 -->
+    <!-- 8ポート以下 詳細比較 -->
     <section>
-      <h2>60W以上製品の詳細比較</h2>
+      <h2>8ポート以下の製品（全条件クリア）</h2>
       <div class="body">
 
         <h3>スマホ3台+SSD構成での評価</h3>
         <table>
-          <thead><tr><th>製品</th><th>電力</th><th>余力</th><th>SSD速度</th><th>Type-C下流</th><th>耐久性</th><th>総合</th></tr></thead>
+          <thead><tr><th>製品</th><th>ポート</th><th>電力</th><th>余力</th><th>速度</th><th>Type-C下流</th><th>筐体</th><th>上流接続</th></tr></thead>
           <tbody>
             <tr style="background:#f0fdf4">
-              <td><strong>RSH-ST10C-6</strong></td>
-              <td>60W</td>
-              <td>+37.5W</td>
-              <td><span class="badge ok">10Gbps</span></td>
-              <td><span class="badge ok">あり</span></td>
-              <td><span class="badge ok">アルミ</span></td>
-              <td><span class="badge ok">最強</span></td>
-            </tr>
-            <tr>
-              <td><strong>RSH-A16</strong></td>
-              <td>100W</td>
-              <td><strong>+77.5W</strong></td>
-              <td>5Gbps</td>
-              <td><span class="badge muted">なし</span></td>
-              <td><span class="badge ok">アルミ</span></td>
-              <td><span class="badge ok">電力最強</span></td>
-            </tr>
-            <tr>
-              <td><strong>RSH-A13</strong></td>
-              <td>72W</td>
-              <td>+49.5W</td>
-              <td><span class="badge ok">10Gbps</span></td>
-              <td><span class="badge muted">なし</span></td>
-              <td><span class="badge ok">アルミ</span></td>
-              <td><span class="badge ok">速度+電力</span></td>
-            </tr>
-            <tr>
-              <td>USBC-HUB7BC</td>
-              <td>60W</td>
-              <td>+37.5W</td>
-              <td>5Gbps</td>
-              <td><span class="badge muted">上流のみ</span></td>
-              <td><span class="badge warn">プラスチック</span></td>
-              <td><span class="badge info">信頼性</span></td>
-            </tr>
-            <tr>
-              <td>USB3-HUB7BC</td>
+              <td><strong>Plugable USBC-HUB7BC</strong></td>
+              <td>7</td>
               <td>60W</td>
               <td>+37.5W</td>
               <td>5Gbps</td>
               <td><span class="badge muted">なし</span></td>
               <td><span class="badge warn">プラスチック</span></td>
-              <td><span class="badge info">実績</span></td>
+              <td><span class="badge ok">USB-C</span></td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td><strong>Plugable USB3-HUB7BC</strong></td>
+              <td>7</td>
+              <td>60W</td>
+              <td>+37.5W</td>
+              <td>5Gbps</td>
+              <td><span class="badge muted">なし</span></td>
+              <td><span class="badge warn">プラスチック</span></td>
+              <td>USB-A</td>
             </tr>
           </tbody>
         </table>
 
         <div class="product-grid" style="margin-top:16px">
           <article class="product-card" style="border:2px solid #22c55e">
-            <div><span class="badge ok">1位: 総合最強</span></div>
-            <h3>RSHTECH RSH-ST10C-6</h3>
-            <dl class="spec">
-              <dt>ポート数</dt><dd>10ポート（USB-A + <strong>USB-C混合</strong>）</dd>
-              <dt>USB規格</dt><dd><strong>USB 3.2 Gen2（10Gbps）</strong>×3ポート + USB 3.0×7ポート</dd>
-              <dt>ACアダプタ</dt><dd>60W付属（余力+37.5W）</dd>
-              <dt>ポートON/OFF</dt><dd>uhubctl対応（Realtek 0BDA:0423）</dd>
-              <dt>筐体</dt><dd><strong>アルミニウム</strong>（放熱性・耐久性◎）</dd>
-              <dt>Type-C</dt><dd><strong>下流ポートにType-Cあり</strong>（スマホ直結可）</dd>
-              <dt>価格</dt><dd>約6,000〜9,000円</dd>
-            </dl>
-            <p class="note"><strong>唯一のUSB-C下流ポート搭載 + 10Gbps + uhubctl対応。</strong>Type-Cスマホを変換アダプタなしで直結できる。SSDも10Gbpsで高速接続。アルミ筐体で長時間稼働でも安定。全条件を最高レベルで満たす。</p>
-          </article>
-
-          <article class="product-card" style="border:2px solid #22c55e">
-            <div><span class="badge ok">2位: 電力最強・100W</span></div>
-            <h3>Rosonway RSH-A16</h3>
-            <dl class="spec">
-              <dt>ポート数</dt><dd><strong>16ポート</strong>（USB 3.0 Type-A）</dd>
-              <dt>USB規格</dt><dd>USB 3.0（5Gbps）</dd>
-              <dt>ACアダプタ</dt><dd><strong>12V/8.3A（100W）</strong>付属（余力+77.5W）</dd>
-              <dt>ポートON/OFF</dt><dd>uhubctl対応（Realtek 0BDA:0411）</dd>
-              <dt>筐体</dt><dd><strong>アルミニウム</strong></dd>
-              <dt>Type-C</dt><dd>なし（全ポートType-A）</dd>
-              <dt>PSE認証</dt><dd><strong>取得済み</strong>（日本の安全基準適合）</dd>
-              <dt>Amazon ASIN</dt><dd><a href="https://www.amazon.co.jp/dp/B08HHZQ728">B08HHZQ728</a></dd>
-              <dt>価格</dt><dd>約6,000〜8,000円</dd>
-            </dl>
-            <p class="note"><strong>100Wの圧倒的電力で何を繋いでも安心。</strong>16ポートなので将来デバイスが増えても対応可能。PSE認証取得で日本での使用も安心。Type-Cポートがないのでスマホ接続にはA-Cケーブルが必要。</p>
-          </article>
-
-          <article class="product-card">
-            <div><span class="badge ok">3位: 10Gbps全ポート</span></div>
-            <h3>Rosonway RSH-A13</h3>
-            <dl class="spec">
-              <dt>ポート数</dt><dd>13ポート（USB 3.2 Gen2 Type-A）</dd>
-              <dt>USB規格</dt><dd><strong>USB 3.2 Gen2（10Gbps）全ポート</strong></dd>
-              <dt>ACアダプタ</dt><dd>12V/6A（72W）付属（余力+49.5W）</dd>
-              <dt>ポートON/OFF</dt><dd>uhubctl対応（VIA Labs 2109:2822）</dd>
-              <dt>筐体</dt><dd><strong>アルミニウム</strong></dd>
-              <dt>Type-C</dt><dd>なし（全ポートType-A）</dd>
-              <dt>Amazon ASIN</dt><dd><a href="https://www.amazon.co.jp/dp/B09GBDPGY3">B09GBDPGY3</a></dd>
-              <dt>価格</dt><dd>約7,000〜8,000円</dd>
-            </dl>
-            <p class="note"><strong>全13ポートが10Gbps対応。</strong>SSDの転送速度を最大限に引き出せる。72Wで電力も十分。Type-Cポートがないためスマホ接続にはA-Cケーブルが必要。</p>
-          </article>
-
-          <article class="product-card">
-            <div><span class="badge info">4位: RPi実績No.1</span></div>
+            <div><span class="badge ok">8ポート以下で最推奨</span></div>
             <h3>Plugable USBC-HUB7BC</h3>
             <dl class="spec">
               <dt>ポート数</dt><dd>7ポート（USB 3.0 Type-A）</dd>
               <dt>USB規格</dt><dd>USB 3.0（5Gbps）</dd>
-              <dt>ACアダプタ</dt><dd>60W付属（余力+37.5W）</dd>
+              <dt>ACアダプタ</dt><dd><strong>60W</strong>付属（余力+37.5W）</dd>
               <dt>ポートON/OFF</dt><dd>uhubctl対応（VIA Labs 2109:0817、6/7ポート制御可）</dd>
               <dt>上流接続</dt><dd><strong>USB-C</strong>（Pi 4/5に最適）</dd>
               <dt>筐体</dt><dd>プラスチック</dd>
@@ -363,23 +342,130 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
               <dt>Amazon ASIN</dt><dd><a href="https://www.amazon.co.jp/dp/B096YKDYX5">B096YKDYX5</a></dd>
               <dt>価格</dt><dd>約6,000〜8,000円</dd>
             </dl>
-            <p class="note"><strong>Raspberry Piとの互換性で最も信頼できるブランド。</strong>Plugable社が自社でRPiテストを実施。USB-C上流接続でPi 4/5に最適。ただし筐体がプラスチックで長時間高負荷時の放熱性はアルミに劣る。</p>
+            <p class="note"><strong>8ポート以下で全条件を満たす最良の選択肢。</strong>Plugable社がRPi互換テストを自社実施。USB-C上流でPi 4/5に直結。60Wでスマホ3台+SSDに十分な余力。弱点はプラスチック筐体と5Gbps止まり。</p>
           </article>
 
           <article class="product-card">
-            <div><span class="badge info">5位: 実績重視・Type-A上流</span></div>
+            <div><span class="badge info">Type-A上流版</span></div>
             <h3>Plugable USB3-HUB7BC</h3>
             <dl class="spec">
               <dt>ポート数</dt><dd>7ポート（USB 3.0 Type-A）</dd>
               <dt>USB規格</dt><dd>USB 3.0（5Gbps）</dd>
-              <dt>ACアダプタ</dt><dd>60W付属（余力+37.5W）</dd>
+              <dt>ACアダプタ</dt><dd><strong>60W</strong>付属（余力+37.5W）</dd>
               <dt>ポートON/OFF</dt><dd>uhubctl対応（VIA Labs 2109:0813）</dd>
               <dt>上流接続</dt><dd>USB-A（従来型）</dd>
               <dt>筐体</dt><dd>プラスチック</dd>
-              <dt>Amazon ASIN</dt><dd>Amazon.co.jpで検索</dd>
               <dt>価格</dt><dd>約5,000〜7,000円</dd>
             </dl>
-            <p class="note">USBC-HUB7BCのType-A上流版。Pi 3B等のUSB-Aポートに接続する場合に選択。長期間の動作実績あり。</p>
+            <p class="note">USBC-HUB7BCのType-A上流版。Pi 3B等のUSB-Aポートに接続する場合に選択。長期動作実績あり。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 惜しい製品（8ポート以下だがアダプタ不足） -->
+    <section>
+      <h2>惜しい製品（8ポート以下・uhubctl対応だが60W未満）</h2>
+      <div class="body">
+        <p>uhubctl対応チップ搭載で8ポート以下だが、付属ACアダプタが60W未満のため全条件をクリアできない製品。</p>
+        <table>
+          <thead><tr><th>製品</th><th>ポート</th><th>付属アダプタ</th><th>uhubctl</th><th>筐体</th><th>速度</th><th>価格</th><th>備考</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Rosonway RSH-A37S</strong></td>
+              <td>7</td>
+              <td><span class="badge warn">24W</span></td>
+              <td><span class="badge ok">2109:2822</span></td>
+              <td><span class="badge ok">アルミ</span></td>
+              <td>5Gbps</td>
+              <td>約3,200円</td>
+              <td>12V DCジャック。社外60Wアダプタに交換可能だが非公式（自己責任）</td>
+            </tr>
+            <tr>
+              <td><strong>Rosonway RSH-ST07C</strong></td>
+              <td>7</td>
+              <td><span class="badge todo">15W</span></td>
+              <td><span class="badge warn">2109:2822（4/7のみ）</span></td>
+              <td><span class="badge ok">アルミ</span></td>
+              <td>10Gbps×3 + 5Gbps×4</td>
+              <td>Amazon.co.jpで検索</td>
+              <td>10Gbpsポートあり。uhubctlは7ポート中4ポートのみ制御可</td>
+            </tr>
+            <tr>
+              <td>Rosonway RSH-518C</td>
+              <td>7</td>
+              <td><span class="badge todo">10W</span></td>
+              <td><span class="badge ok">2109:0817</span></td>
+              <td><span class="badge ok">アルミ</span></td>
+              <td>5Gbps</td>
+              <td>約3,500〜5,000円</td>
+              <td>USB-C上流。アダプタ容量が小さすぎ</td>
+            </tr>
+            <tr>
+              <td>AmazonBasics HU9003V1EBL</td>
+              <td>7</td>
+              <td><span class="badge warn">36W</span></td>
+              <td><span class="badge ok">2109:2817</span></td>
+              <td>プラスチック</td>
+              <td>5Gbps</td>
+              <td>不明</td>
+              <td>日本での入手性が不確実</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="tip-box">
+          <h3>アダプタ交換という選択肢（自己責任）</h3>
+          <p><strong>Rosonway RSH-A37S</strong> は12V DCバレルジャックを使用しており、付属の12V/2A（24W）アダプタを <strong>12V/5A（60W）の社外アダプタに交換</strong>すれば電力問題は解消できます。uhubctlチップ（VIA Labs VL822）はアダプタ容量に関係なく動作します。ただし<strong>ハブ内部の配線や部品の定格電流が不明</strong>なため、過電流のリスクがあり非公式な改造となります。</p>
+          <p>この方法を取る場合: アルミ筐体 + uhubctl対応 + 約3,200円 + 社外アダプタ約1,500円 = <strong>合計約4,700円で60W級のアルミハブ</strong>が手に入る計算です。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8ポート超の有力製品 -->
+    <section>
+      <h2>参考: 8ポート超の有力製品</h2>
+      <div class="body">
+        <p>8ポートの制約を外せば、10Gbps・Type-C下流・アルミ筐体の製品が選べます。</p>
+        <div class="product-grid">
+          <article class="product-card" style="border:2px solid #2563eb">
+            <div><span class="badge info">8ポート超で総合最強</span></div>
+            <h3>RSHTECH RSH-ST10C-6</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>10ポート（Type-A 7 + <strong>Type-C 3</strong>）</dd>
+              <dt>USB規格</dt><dd><strong>USB 3.2 Gen2（10Gbps）</strong>×3 + USB 3.0×7</dd>
+              <dt>ACアダプタ</dt><dd>60W付属</dd>
+              <dt>ポートON/OFF</dt><dd>uhubctl対応（0BDA:0423）</dd>
+              <dt>筐体</dt><dd><strong>アルミニウム</strong></dd>
+              <dt>Type-C下流</dt><dd><strong>あり</strong>（スマホ直結可）</dd>
+              <dt>価格</dt><dd>約6,000〜9,000円</dd>
+            </dl>
+          </article>
+
+          <article class="product-card">
+            <div><span class="badge info">電力最強 100W</span></div>
+            <h3>Rosonway RSH-A16</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>16ポート（全Type-A）</dd>
+              <dt>ACアダプタ</dt><dd><strong>100W</strong>（12V/8.3A）</dd>
+              <dt>uhubctl</dt><dd>0BDA:0411</dd>
+              <dt>筐体</dt><dd>アルミ / PSE認証済み</dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B08HHZQ728">B08HHZQ728</a></dd>
+              <dt>価格</dt><dd>約6,000〜8,000円</dd>
+            </dl>
+          </article>
+
+          <article class="product-card">
+            <div><span class="badge info">全ポート10Gbps</span></div>
+            <h3>Rosonway RSH-A13</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>13ポート（全Type-A）</dd>
+              <dt>USB規格</dt><dd><strong>全ポートUSB 3.2 Gen2（10Gbps）</strong></dd>
+              <dt>ACアダプタ</dt><dd>72W（12V/6A）</dd>
+              <dt>uhubctl</dt><dd>2109:2822</dd>
+              <dt>筐体</dt><dd>アルミ</dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B09GBDPGY3">B09GBDPGY3</a></dd>
+              <dt>価格</dt><dd>約7,000〜8,000円</dd>
+            </dl>
           </article>
         </div>
       </div>
