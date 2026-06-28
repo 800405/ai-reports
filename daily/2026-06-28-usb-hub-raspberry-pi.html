@@ -49,9 +49,9 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
 
     <!-- サマリー -->
     <div class="cards">
-      <div class="card"><strong>Rosonway</strong><span class="label">おすすめメーカー</span></div>
+      <div class="card"><strong>スマホ3台+SSD</strong><span class="label">接続構成</span></div>
+      <div class="card"><strong>18W以上</strong><span class="label">必要電力（5V換算）</span></div>
       <div class="card"><strong>uhubctl</strong><span class="label">ポートON/OFF制御ツール</span></div>
-      <div class="card"><strong>900mA</strong><span class="label">USB 3.0ポート上限</span></div>
       <div class="card"><strong>要注意</strong><span class="label">バックフィード（逆流給電）</span></div>
     </div>
 
@@ -60,21 +60,45 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
       <h2>結論・おすすめ構成</h2>
       <div class="body">
         <div class="verdict">
-          <h3>Rosonway RSH-A37S が最有力候補</h3>
-          <p>要件「セルフパワー + ACアダプタ付き + 4ポート以上 + ポートON/OFF制御 + 日本で購入可能」を<strong>すべて満たす製品</strong>は限られますが、以下の3製品が条件に合致します:</p>
+          <h3>Plugable USBC-HUB7BC が最有力候補（スマホ3台+SSD構成）</h3>
+          <p>スマホ3台 + SSD 1台の同時接続には<strong>最低18W（5V換算）</strong>の給電能力が必要です。12V→5V変換ロス（約80%効率）を考慮すると、<strong>ACアダプタは22.5W以上</strong>が安全ラインとなります。</p>
           <ol>
-            <li><strong>Rosonway RSH-A37S</strong> &mdash; 7ポート / USB 3.0 / 約3,200円 / Amazon.co.jp購入可</li>
-            <li><strong>Rosonway RSH-A10</strong> &mdash; 10ポート / USB 3.0 / 約3,500〜4,500円 / Amazon.co.jp購入可</li>
-            <li><strong>Plugable USBC-HUB7BC</strong> &mdash; 7ポート / USB 3.0 / 約6,000〜8,000円 / USB-C接続</li>
+            <li><strong>Plugable USBC-HUB7BC</strong> &mdash; 7ポート / <strong>60W</strong> / 余力42W / 最も安全 <span class="badge ok">1位</span></li>
+            <li><strong>Rosonway RSH-A10</strong> &mdash; 10ポート / <strong>36W</strong> / 余力14W / 十分 <span class="badge ok">2位</span></li>
+            <li><strong>Rosonway RSH-A37S</strong> &mdash; 7ポート / <strong>24W</strong> / 余力1.5W / <span class="badge todo">ギリギリ危険</span></li>
           </ol>
         </div>
+
+        <h3>電力バジェット計算</h3>
+        <table>
+          <thead><tr><th>デバイス</th><th>台数</th><th>最大電流</th><th>消費電力（5V）</th></tr></thead>
+          <tbody>
+            <tr><td>スマートフォン（USB 3.0）</td><td>3台</td><td>各900mA</td><td>13.5W</td></tr>
+            <tr><td>外付けSSD（USB 3.0）</td><td>1台</td><td>約900mA</td><td>4.5W</td></tr>
+            <tr><td colspan="3"><strong>合計（5V側）</strong></td><td><strong>18W</strong></td></tr>
+            <tr><td colspan="3">12V→5V変換ロス（効率80%想定）</td><td>+4.5W</td></tr>
+            <tr><td colspan="3"><strong>ACアダプタ必要電力</strong></td><td><strong>約22.5W以上</strong></td></tr>
+          </tbody>
+        </table>
+
+        <table style="margin-top:12px">
+          <thead><tr><th>製品</th><th>ACアダプタ</th><th>余力</th><th>判定</th></tr></thead>
+          <tbody>
+            <tr style="background:#f0fdf4"><td><strong>Plugable USBC-HUB7BC</strong></td><td>60W</td><td>+37.5W</td><td><span class="badge ok">十分すぎる余力</span></td></tr>
+            <tr style="background:#f0fdf4"><td><strong>Rosonway RSH-A10</strong></td><td>36W</td><td>+13.5W</td><td><span class="badge ok">安全圏</span></td></tr>
+            <tr><td>Rosonway RSH-A13</td><td>72W</td><td>+49.5W</td><td><span class="badge info">過剰だが安心</span></td></tr>
+            <tr style="background:#fef2f2"><td><del>Rosonway RSH-A37S</del></td><td>24W</td><td>+1.5W</td><td><span class="badge todo">余力なし・不推奨</span></td></tr>
+          </tbody>
+        </table>
+
         <div class="tip-box">
-          <h3>おすすめの実践構成</h3>
+          <h3>おすすめの実践構成（スマホ3台+SSD）</h3>
           <ol>
             <li><strong>Pi 4B/5を使用</strong>（バックフィード保護が改善されている）</li>
-            <li><strong>uhubctl対応セルフパワーハブを選定</strong>（Rosonway RSH-A37S等）</li>
-            <li><strong>uhubctlでポート電源を制御</strong>（<code>sudo apt install uhubctl</code>）</li>
+            <li><strong>Plugable USBC-HUB7BC</strong> または <strong>Rosonway RSH-A10</strong> を選定</li>
+            <li><strong>uhubctlでポート電源を個別制御</strong>（<code>sudo apt install uhubctl</code>）</li>
             <li>スマホ側で<strong>USBデバッグ（ADB）</strong>またはUSBテザリングを有効にしてデータ通信を確保</li>
+            <li>SSDはUSB 3.0ポートに接続し帯域を確保（スマホはUSB 2.0速度で十分）</li>
           </ol>
         </div>
       </div>
@@ -94,6 +118,28 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
           </tbody>
         </table>
         <p class="note">スマホの充電を維持するには最低500mA、快適に使うなら1A以上が推奨です。USB 2.0ハブでは「充電中」表示にならない場合があります。</p>
+
+        <h3>USB通信帯域（スマホ3台+SSD同時接続時）</h3>
+        <table>
+          <thead><tr><th>デバイス</th><th>接続規格</th><th>実効帯域</th><th>典型的な用途</th><th>帯域負荷</th></tr></thead>
+          <tbody>
+            <tr><td>スマホ（ADB/テザリング）</td><td>USB 2.0 HS</td><td>最大480Mbps</td><td>ADB: ~30Mbps / テザリング: ~100Mbps</td><td><span class="badge ok">低い</span></td></tr>
+            <tr><td>外付けSSD</td><td>USB 3.0 SS</td><td>最大5Gbps</td><td>ファイル転送: 300〜400MB/s</td><td><span class="badge warn">高い</span></td></tr>
+          </tbody>
+        </table>
+        <p><strong>USB 3.0ハブの総帯域は5Gbps（共有）です。</strong>スマホ3台のADB/テザリングは帯域をほぼ消費しません（計300Mbps程度）。SSDの大容量ファイル転送中にスマホ通信が遅くなることも実用上ほぼありません。帯域は心配不要です。</p>
+        <div class="tip-box">
+          <h3>ハブコントローラチップの違い</h3>
+          <table>
+            <thead><tr><th>製品</th><th>チップ</th><th>VID:PID</th><th>帯域性能</th></tr></thead>
+            <tbody>
+              <tr><td>Plugable USBC-HUB7BC</td><td>VIA Labs VL817</td><td>2109:0817</td><td>USB 3.1 Gen 1（5Gbps）</td></tr>
+              <tr><td>Rosonway RSH-A10</td><td>Realtek RTL5411</td><td>0BDA:0411</td><td>USB 3.0（5Gbps）</td></tr>
+              <tr><td>Rosonway RSH-A37S</td><td>VIA Labs VL822</td><td>2109:2822</td><td>USB 3.1 Gen 1（5Gbps）</td></tr>
+            </tbody>
+          </table>
+          <p>3製品とも<strong>5Gbpsで帯域に差はありません</strong>。スマホのADB/テザリングはUSB 2.0速度で動作するため、SSDと帯域を奪い合うこともありません。</p>
+        </div>
       </div>
     </section>
 
@@ -121,7 +167,29 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
           <tbody>
             <tr style="background:#f0fdf4">
               <td><span class="badge ok">1位</span></td>
-              <td><strong>Rosonway RSH-A37S</strong></td>
+              <td><strong>Plugable USBC-HUB7BC</strong></td>
+              <td>7</td>
+              <td>3.0</td>
+              <td><strong>60W</strong></td>
+              <td><span class="badge ok">6/7ポート対応</span></td>
+              <td>2109:0817</td>
+              <td>約6,000〜8,000円</td>
+              <td><a href="https://www.amazon.co.jp/dp/B096YKDYX5">B096YKDYX5</a></td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td><span class="badge ok">2位</span></td>
+              <td><strong>Rosonway RSH-A10</strong></td>
+              <td>10</td>
+              <td>3.0</td>
+              <td><strong>12V/3A (36W)</strong></td>
+              <td><span class="badge ok">個別対応</span></td>
+              <td>0BDA:0411</td>
+              <td>約3,500〜4,500円</td>
+              <td><a href="https://www.amazon.co.jp/dp/B081H153FY">B081H153FY</a></td>
+            </tr>
+            <tr style="background:#fef2f2">
+              <td><span class="badge todo">不推奨</span></td>
+              <td><del>Rosonway RSH-A37S</del></td>
               <td>7</td>
               <td>3.0</td>
               <td>12V/2A (24W)</td>
@@ -129,28 +197,6 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
               <td>2109:2822</td>
               <td>約3,200円</td>
               <td><a href="https://www.amazon.co.jp/dp/B087X2F876">B087X2F876</a></td>
-            </tr>
-            <tr style="background:#f0fdf4">
-              <td><span class="badge ok">2位</span></td>
-              <td><strong>Rosonway RSH-A10</strong></td>
-              <td>10</td>
-              <td>3.0</td>
-              <td>12V/3A (36W)</td>
-              <td><span class="badge ok">個別対応</span></td>
-              <td>0BDA:0411</td>
-              <td>約3,500〜4,500円</td>
-              <td><a href="https://www.amazon.co.jp/dp/B081H153FY">B081H153FY</a></td>
-            </tr>
-            <tr style="background:#f0fdf4">
-              <td><span class="badge ok">3位</span></td>
-              <td><strong>Plugable USBC-HUB7BC</strong></td>
-              <td>7</td>
-              <td>3.0</td>
-              <td>60W</td>
-              <td><span class="badge ok">6/7ポート対応</span></td>
-              <td>2109:0817</td>
-              <td>約6,000〜8,000円</td>
-              <td><a href="https://www.amazon.co.jp/dp/B096YKDYX5">B096YKDYX5</a></td>
             </tr>
             <tr>
               <td><span class="badge info">候補</span></td>
@@ -197,50 +243,49 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
       <h2>おすすめ製品の詳細</h2>
       <div class="body">
         <div class="product-grid">
-          <article class="product-card">
-            <div><span class="badge ok">1位: コスパ最強</span></div>
-            <h3>Rosonway RSH-A37S</h3>
+          <article class="product-card" style="border:2px solid #22c55e">
+            <div><span class="badge ok">1位: 電力余裕・信頼性</span></div>
+            <h3>Plugable USBC-HUB7BC</h3>
             <dl class="spec">
-              <dt>ポート数</dt><dd>7ポート（USB 3.0 Type-A）</dd>
-              <dt>ACアダプタ</dt><dd>12V / 2A（24W）付属</dd>
+              <dt>ポート数</dt><dd>7ポート（USB 3.0）</dd>
+              <dt>ACアダプタ</dt><dd><strong>60W</strong>付属（余力+37.5W）</dd>
               <dt>各ポート最大</dt><dd>900mA（USB 3.0規格）</dd>
-              <dt>ポートON/OFF</dt><dd>uhubctl対応（VIA Labs 2109:2822）</dd>
-              <dt>筐体</dt><dd>アルミニウム</dd>
-              <dt>給電方式</dt><dd>セルフパワー / バスパワー両対応</dd>
-              <dt>Amazon ASIN</dt><dd><a href="https://www.amazon.co.jp/dp/B087X2F876">B087X2F876</a></dd>
-              <dt>価格</dt><dd>約3,200円</dd>
+              <dt>ポートON/OFF</dt><dd>uhubctl対応（6/7ポート制御可）</dd>
+              <dt>ホスト接続</dt><dd>USB-C（Pi 4/5のUSB-Cポートに最適）</dd>
+              <dt>ブランド</dt><dd>Plugable（RPi互換性テスト実績あり）</dd>
+              <dt>Amazon ASIN</dt><dd><a href="https://www.amazon.co.jp/dp/B096YKDYX5">B096YKDYX5</a></dd>
+              <dt>価格</dt><dd>約6,000〜8,000円</dd>
             </dl>
-            <p class="note">最もコスパが良い選択肢。7ポートすべてuhubctlで個別電源制御可能。アルミ筐体で放熱性も良好。Amazon.co.jpで購入可。</p>
+            <p class="note"><strong>スマホ3台+SSD構成に最適。</strong>60Wの電源はスマホ3台+SSD（計18W）に対して余力37.5Wと圧倒的。Plugable社はRPi互換テストを自社実施。USB-C接続でPi 4/5に直結。全ポートフル使用でも電力不足の心配がない。</p>
           </article>
 
           <article class="product-card">
-            <div><span class="badge ok">2位: 多ポート</span></div>
+            <div><span class="badge ok">2位: コスパ+多ポート</span></div>
             <h3>Rosonway RSH-A10</h3>
             <dl class="spec">
               <dt>ポート数</dt><dd>10ポート（USB 3.0 Type-A）</dd>
-              <dt>ACアダプタ</dt><dd>12V / 3A（36W）付属</dd>
+              <dt>ACアダプタ</dt><dd><strong>12V / 3A（36W）</strong>付属（余力+13.5W）</dd>
               <dt>各ポート最大</dt><dd>900mA（USB 3.0規格）</dd>
               <dt>ポートON/OFF</dt><dd>uhubctl対応（Realtek 0BDA:0411）</dd>
               <dt>筐体</dt><dd>アルミニウム / 個別物理スイッチ付き</dd>
               <dt>Amazon ASIN</dt><dd><a href="https://www.amazon.co.jp/dp/B081H153FY">B081H153FY</a></dd>
               <dt>価格</dt><dd>約3,500〜4,500円</dd>
             </dl>
-            <p class="note">スマホ以外にも複数デバイスを接続したい場合に最適。物理スイッチ+ソフトウェア制御の両方が使える。</p>
+            <p class="note"><strong>コスパ重視ならこちら。</strong>36Wで余力13.5Wは安全圏。10ポートあるので将来デバイスが増えても対応可能。物理スイッチ+ソフトウェア制御の両方が使える。Plugableの半額以下。</p>
           </article>
 
-          <article class="product-card">
-            <div><span class="badge ok">3位: USB-C接続</span></div>
-            <h3>Plugable USBC-HUB7BC</h3>
+          <article class="product-card" style="border:1px solid #fca5a5;background:#fef2f2">
+            <div><span class="badge todo">不推奨（電力不足）</span></div>
+            <h3><del>Rosonway RSH-A37S</del></h3>
             <dl class="spec">
-              <dt>ポート数</dt><dd>7ポート（USB 3.0）</dd>
-              <dt>ACアダプタ</dt><dd>60W付属</dd>
-              <dt>ポートON/OFF</dt><dd>uhubctl対応（6/7ポート制御可）</dd>
-              <dt>ホスト接続</dt><dd>USB-C（Pi 4/5のUSB-Cポートに最適）</dd>
-              <dt>ブランド</dt><dd>Plugable（RPi互換性テスト実績あり）</dd>
-              <dt>Amazon ASIN</dt><dd><a href="https://www.amazon.co.jp/dp/B096YKDYX5">B096YKDYX5</a></td>
-              <dt>価格</dt><dd>約6,000〜8,000円</dd>
+              <dt>ポート数</dt><dd>7ポート（USB 3.0 Type-A）</dd>
+              <dt>ACアダプタ</dt><dd>12V / 2A（24W）付属（余力+1.5Wのみ）</dd>
+              <dt>各ポート最大</dt><dd>900mA（USB 3.0規格）</dd>
+              <dt>ポートON/OFF</dt><dd>uhubctl対応（VIA Labs 2109:2822）</dd>
+              <dt>Amazon ASIN</dt><dd><a href="https://www.amazon.co.jp/dp/B087X2F876">B087X2F876</a></dd>
+              <dt>価格</dt><dd>約3,200円</dd>
             </dl>
-            <p class="note">USB-C接続でPi 4/5に最適。60Wの強力な電源で安定給電。Plugable社はRPiとの互換性テストを自社で実施している信頼性の高いブランド。</p>
+            <p class="note"><strong>スマホ3台+SSD構成では電力不足。</strong>24Wのアダプタでは4デバイス同時使用時に余力がほぼなく、電圧降下による不安定動作やSSD切断のリスクあり。スマホ1台のみなら使用可。</p>
           </article>
         </div>
       </div>
