@@ -55,54 +55,145 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
       <div class="card"><strong>要注意</strong><span class="label">バックフィード（逆流給電）</span></div>
     </div>
 
+    <!-- Amazonレビューに基づく安全性評価 -->
+    <section>
+      <h2>Amazonレビューに基づく安全性評価</h2>
+      <div class="body">
+        <p>各製品のAmazon.co.jpレビュー・レビューブログ・サクラチェッカーを横断調査し、安全性と信頼性を評価しました。</p>
+
+        <div class="risk-box">
+          <h3>RSH-A37S: Raspberry Pi 4Bとの互換性問題あり</h3>
+          <p>Amazonレビューで<strong>Raspberry Pi 4Bで起動できない</strong>という報告が複数あります。具体的な症状:</p>
+          <ul>
+            <li><strong>RPi 4BのUSBブート時にHUB上のHDDを認識できず起動しない</strong></li>
+            <li>Windows 11接続時、何も接続していなくても<strong>スリープ復帰不可</strong>になる</li>
+            <li>原因推定: <strong>5V給電系がPC側に逆流</strong>し、電源スイッチのGND検出が誤動作</li>
+            <li>同メーカー比較テストで<strong>RSH-518のみRPi 4Bで正常動作</strong>、RSH-A37SとRSH-A35は失敗</li>
+          </ul>
+          <p class="note">ただし「ハブとしての通常使用」（USBブートではなくスマホ接続等）では問題なく動作するレビューも多数。2年以上故障なしとの長期使用報告もあり。RPiからSSDブートする場合は要注意。</p>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>製品</th>
+              <th>安全性</th>
+              <th>Amazonレビュー要旨</th>
+              <th>RPi互換</th>
+              <th>ブランド信頼度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>RSH-A37S</strong></td>
+              <td><span class="badge warn">注意</span></td>
+              <td>RPi 4Bブート不可の報告あり。通常使用は2年以上故障なしの報告。アルミ筐体で放熱良好</td>
+              <td><span class="badge warn">USBブート×</span></td>
+              <td>ROSONWAY/RSHTECH（深圳）。Amazon販売歴7年+</td>
+            </tr>
+            <tr>
+              <td><strong>atolla 7+1</strong></td>
+              <td><span class="badge warn">注意</span></td>
+              <td>30分使用後にLED消灯→<strong>内部から異音（パチパチ）</strong>の報告1件。到着時ポート不良の報告あり。一方で3年問題なしの報告も</td>
+              <td><span class="badge muted">不明</span></td>
+              <td>深圳市睿唯科技（2015年設立）。Amazon販売歴10年+</td>
+            </tr>
+            <tr>
+              <td><strong>JESWO 11ポート</strong></td>
+              <td><span class="badge ok">問題なし</span></td>
+              <td>安全性に関するネガティブ報告なし。Amazon評価4.5。アルミ筐体モデルあり</td>
+              <td><span class="badge muted">不明</span></td>
+              <td>JESWO（深圳・2019年設立）</td>
+            </tr>
+            <tr>
+              <td><strong>UGREEN 7ポート</strong></td>
+              <td><span class="badge ok">良好</span></td>
+              <td>安定動作の報告多数。問題報告なし。大手ブランドの安心感</td>
+              <td><span class="badge muted">不明</span></td>
+              <td><span class="badge ok">大手</span> UGREEN（上場企業）</td>
+            </tr>
+            <tr>
+              <td><strong>RSH-A107</strong></td>
+              <td><span class="badge ok">問題なし</span></td>
+              <td>レビュー数は少ないが安全性の問題報告なし</td>
+              <td><span class="badge muted">不明</span></td>
+              <td>RSHTECH（深圳）</td>
+            </tr>
+            <tr>
+              <td><strong>RSH-ST07C</strong></td>
+              <td><span class="badge ok">問題なし</span></td>
+              <td>新製品でレビュー少。安全性の問題報告なし</td>
+              <td><span class="badge muted">不明</span></td>
+              <td>RSHTECH（深圳）</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="risk-box" style="border-left-color:#f59e0b;background:#fffbeb">
+          <h3 style="color:#b45309">USBハブカテゴリのサクラレビュー問題</h3>
+          <p>サクラチェッカーによると、<strong>USBハブカテゴリの55%以上がサクラ商品</strong>とされています。特に中国メーカーの低価格USBハブはレビュー操作のリスクが高いため、以下に注意:</p>
+          <ul>
+            <li>星5レビューが異常に多い（90%超）製品は疑う</li>
+            <li><strong>UGREEN</strong>は上場企業で最もブランド信頼度が高い</li>
+            <li>ROSONWAY/RSHTECHはAmazon販売歴が長く一定の実績あり</li>
+            <li>atolla/JESWOは小規模メーカーだが重大事故の報告はなし</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <!-- 結論 -->
     <section>
       <h2>結論・おすすめ構成</h2>
       <div class="body">
         <div class="verdict">
-          <h3>予算5,000円以下のベストバイ: Rosonway RSH-A37S（約2,700円）</h3>
-          <p>条件をゆるめて<strong>予算5,000円以下</strong>で探した結果、<strong>RSH-A37S単体（24W・約2,700円）がコスパ最強</strong>です。uhubctl対応・アルミ筐体・7ポート・個別スイッチ付き。24Wではスマホ3台+SSDでギリギリですが、<strong>社外12V/5Aアダプタ（約1,500円）を追加すれば合計約4,200円で60W級に強化</strong>できます。条件をゆるめず全部入りなら Plugable（約5,000〜7,000円）ですが予算オーバーです。</p>
+          <h3>安全性考慮後のベストバイ（予算5,000円以下）</h3>
+          <p><strong>安全性を最優先</strong>するなら、ブランド信頼度が高い <strong>UGREEN 7ポート（約3,824円）</strong>が最も安心です。ただしuhubctlは未確認。<strong>uhubctl必須</strong>なら <strong>RSH-A37S（約2,700円）</strong>が依然として最有力ですが、<strong>RPi 4BでのUSBブートには使わない</strong>よう注意してください（スマホ接続・データ通信は問題なし）。<strong>電力重視</strong>なら <strong>JESWO 11ポート（36W・約3,689円）</strong>が安全性報告もクリーンでバランス良好です。</p>
         </div>
 
-        <h3>予算5,000円以下の選択肢</h3>
+        <h3>安全性考慮後の選択肢（予算5,000円以下）</h3>
         <table>
-          <thead><tr><th>方針</th><th>製品</th><th>ポート</th><th>電力</th><th>価格</th><th>メリット</th><th>デメリット</th></tr></thead>
+          <thead><tr><th>方針</th><th>製品</th><th>ポート</th><th>電力</th><th>価格</th><th>安全性</th><th>メリット</th><th>デメリット</th></tr></thead>
           <tbody>
             <tr style="background:#f0fdf4">
-              <td><span class="badge ok">1位: コスパ最強</span></td>
-              <td><strong>Rosonway RSH-A37S</strong></td>
+              <td><span class="badge ok">1位: 安全+電力</span></td>
+              <td><strong>JESWO 11ポート</strong></td>
+              <td>7+4</td>
+              <td>36W</td>
+              <td>約3,689円</td>
+              <td><span class="badge ok">問題なし</span></td>
+              <td>36Wで電力十分・安全性報告クリーン</td>
+              <td>uhubctl未確認・11ポート</td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td><span class="badge ok">2位: ブランド安心</span></td>
+              <td><strong>UGREEN 7ポート</strong></td>
+              <td>7</td>
+              <td>24W</td>
+              <td>約3,824円</td>
+              <td><span class="badge ok">良好</span></td>
+              <td>上場企業・安定動作・アルミ</td>
+              <td>uhubctl未確認・24Wでギリギリ</td>
+            </tr>
+            <tr style="background:#eff6ff">
+              <td><span class="badge info">3位: uhubctl重視</span></td>
+              <td><strong>RSH-A37S</strong></td>
               <td>7</td>
               <td>24W</td>
               <td>約2,700円</td>
-              <td>アルミ・uhubctl確認済・個別SW</td>
-              <td>24Wで3台+SSDはギリギリ（余力1.5W）</td>
+              <td><span class="badge warn">RPiブート注意</span></td>
+              <td>uhubctl確認済・アルミ・最安</td>
+              <td>RPi USBブート不可の報告・24W</td>
             </tr>
-            <tr style="background:#f0fdf4">
-              <td><span class="badge ok">1位+: アダプタ強化</span></td>
+            <tr style="background:#eff6ff">
+              <td><span class="badge info">3位+: アダプタ強化</span></td>
               <td><strong>RSH-A37S + 社外12V/5A</strong></td>
               <td>7</td>
               <td>60W</td>
               <td>約4,200円</td>
-              <td>全条件クリア・コスパ最良</td>
-              <td>非公式改造・自己責任</td>
-            </tr>
-            <tr style="background:#eff6ff">
-              <td><span class="badge info">2位: uhubctl不問</span></td>
-              <td><strong>atolla 7ポート+1充電</strong></td>
-              <td>7+1</td>
-              <td>20W</td>
-              <td>約3,200円</td>
-              <td>充電専用ポート付・個別SW</td>
-              <td>uhubctl未確認・20Wで電力不足</td>
-            </tr>
-            <tr style="background:#fffbeb">
-              <td><span class="badge warn">3位: 台数減らす</span></td>
-              <td><strong>Rosonway RSH-ST07C</strong></td>
-              <td>7</td>
-              <td>15W</td>
-              <td>約3,500円</td>
-              <td>10Gbps×3ポート・アルミ・Type-C</td>
-              <td>15Wで2台が限界・uhubctl 4/7ポートのみ</td>
+              <td><span class="badge warn">RPiブート注意</span></td>
+              <td>uhubctl+60W・コスパ最良</td>
+              <td>非公式改造・RPiブート問題</td>
             </tr>
             <tr style="background:#fffbeb">
               <td><span class="badge warn">参考: 予算超</span></td>
@@ -110,6 +201,7 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
               <td>7</td>
               <td>60W</td>
               <td>約6,000〜8,000円</td>
+              <td><span class="badge ok">最も安全</span></td>
               <td>全条件クリア・RPi実績No.1</td>
               <td>予算オーバー</td>
             </tr>
@@ -160,18 +252,23 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
         </table>
 
         <div class="tip-box">
-          <h3>おすすめの実践構成（予算5,000円以下）</h3>
-          <p><strong>最安で確実に動かすなら（約2,700円）:</strong></p>
+          <h3>おすすめの実践構成（予算5,000円以下・安全性重視）</h3>
+          <p><strong>安全+電力バランス重視なら（約3,689円）:</strong></p>
           <ol>
-            <li><strong>RSH-A37S</strong> を購入（Amazon.co.jp で約2,700円）</li>
-            <li>付属24Wアダプタでまず動作確認（スマホ2台+SSDなら余裕あり）</li>
-            <li>3台同時充電で不安定なら <strong>12V/5Aアダプタ（約1,500円）を追加購入</strong>して交換</li>
-            <li><code>sudo apt install uhubctl && sudo uhubctl</code> でポート制御を確認</li>
+            <li><strong>JESWO 11ポート（36W）</strong>を購入 — Amazonレビューで安全性問題なし・36Wで電力十分</li>
+            <li>スマホは充電ポートに接続（急速充電）、SSDはデータポートに接続</li>
+            <li>uhubctlは使えない可能性が高いが、物理スイッチでON/OFF可能</li>
           </ol>
-          <p><strong>予算に余裕があるなら（約6,000〜8,000円）:</strong></p>
+          <p><strong>ブランド安心重視なら（約3,824円）:</strong></p>
           <ol>
-            <li><strong>Plugable USBC-HUB7BC</strong>（60W付属・全条件クリア・改造不要）</li>
-            <li>または <strong>RSHTECH RSH-ST10C-6</strong>（10Gbps・Type-C・アルミ・60W）</li>
+            <li><strong>UGREEN 7ポート（24W）</strong>— 上場企業ブランド・アルミ筐体・安定動作の評判</li>
+            <li>24Wで3台+SSDはギリギリだが、大手ブランドの品質管理は信頼できる</li>
+          </ol>
+          <p><strong>uhubctl必須なら（約2,700〜4,200円）:</strong></p>
+          <ol>
+            <li><strong>RSH-A37S</strong>を購入 — uhubctl確認済・最安だがRPiブート注意</li>
+            <li><strong>SSDからのUSBブートには使わない</strong>（認識不可の報告あり）</li>
+            <li>スマホ接続・データ通信のみなら通常動作。必要なら社外アダプタで60W化</li>
           </ol>
         </div>
       </div>
@@ -769,6 +866,11 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
           <li><strong>[blog]</strong> <a href="https://tamatora.36nyan.com/?p=2045">たまトラ - セルフパワーUSBハブ供給電流比較</a></li>
           <li><strong>[secondary]</strong> Amazon.co.jp - Pimoroni PiHub (B00FE8AVMU)</li>
           <li><strong>[blog]</strong> <a href="https://www.thun-techblog.com/index.php/blog/review-u3h-t410swh-rpi-rec-3hub/">THUNの遊戯室 - ELECOM U3H-T410SWHレビュー</a></li>
+          <li><strong>[review]</strong> <a href="https://www.amazon.co.jp/product-reviews/B087X2F876">Amazon.co.jp - RSH-A37Sカスタマーレビュー</a> &mdash; RPi 4B互換性問題の報告</li>
+          <li><strong>[review]</strong> <a href="https://www.amazon.co.jp/product-reviews/B07JC2NCCC">Amazon.co.jp - atolla 7+1ポートカスタマーレビュー</a></li>
+          <li><strong>[tool]</strong> <a href="https://sakura-checker.jp/">サクラチェッカー</a> &mdash; USBハブカテゴリの55%以上がサクラ商品との分析</li>
+          <li><strong>[review]</strong> <a href="https://curious-review.com/atolla-kaisya/">atolla会社調査レビュー</a></li>
+          <li><strong>[review]</strong> <a href="https://electronikz.com/products/jeswo-11-port-usb-hub-review">JESWO 11ポートUSBハブ レビュー</a></li>
         </ul>
       </div>
     </section>
