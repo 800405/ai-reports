@@ -51,7 +51,7 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
     <div class="cards">
       <div class="card"><strong>スマホ3台+SSD</strong><span class="label">接続構成</span></div>
       <div class="card"><strong>18W以上</strong><span class="label">必要電力（5V換算）</span></div>
-      <div class="card"><strong>uhubctl</strong><span class="label">ポートON/OFF制御ツール</span></div>
+      <div class="card"><strong>5,000円以下</strong><span class="label">予算制約</span></div>
       <div class="card"><strong>要注意</strong><span class="label">バックフィード（逆流給電）</span></div>
     </div>
 
@@ -60,52 +60,69 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
       <h2>結論・おすすめ構成</h2>
       <div class="body">
         <div class="verdict">
-          <h3>8ポート以下で全条件を満たすのは Plugable 2機種のみ</h3>
-          <p>60W以上・uhubctl対応・8ポート以下・日本購入可の全条件を満たす製品を徹底調査した結果、<strong>該当はPlugable 2機種だけ</strong>でした。Rosonway/RSHTECHはuhubctl対応チップを使っていますが、8ポート以下モデルには24W以下のアダプタしか付属しません。</p>
-        </div>
-        <div class="risk-box" style="border-left-color:#f59e0b;background:#fffbeb">
-          <h3 style="color:#b45309">なぜ8ポート以下 + 60W以上の選択肢が少ないのか</h3>
-          <p>メーカーはポート数に応じてアダプタ容量を決めるため、4〜8ポートモデルには10〜36Wのアダプタしか付属しません。60W以上のアダプタが付くのは10ポート以上のモデルだけです。Plugableは例外的に7ポートで60Wアダプタを付属させています。</p>
+          <h3>予算5,000円以下のベストバイ: Rosonway RSH-A37S（約2,700円）</h3>
+          <p>条件をゆるめて<strong>予算5,000円以下</strong>で探した結果、<strong>RSH-A37S単体（24W・約2,700円）がコスパ最強</strong>です。uhubctl対応・アルミ筐体・7ポート・個別スイッチ付き。24Wではスマホ3台+SSDでギリギリですが、<strong>社外12V/5Aアダプタ（約1,500円）を追加すれば合計約4,200円で60W級に強化</strong>できます。条件をゆるめず全部入りなら Plugable（約5,000〜7,000円）ですが予算オーバーです。</p>
         </div>
 
-        <h3>選択肢の全体像</h3>
+        <h3>予算5,000円以下の選択肢</h3>
         <table>
-          <thead><tr><th>方針</th><th>製品</th><th>ポート</th><th>電力</th><th>メリット</th><th>デメリット</th></tr></thead>
+          <thead><tr><th>方針</th><th>製品</th><th>ポート</th><th>電力</th><th>価格</th><th>メリット</th><th>デメリット</th></tr></thead>
           <tbody>
             <tr style="background:#f0fdf4">
-              <td><span class="badge ok">A: 8ポート以下で確実</span></td>
+              <td><span class="badge ok">1位: コスパ最強</span></td>
+              <td><strong>Rosonway RSH-A37S</strong></td>
+              <td>7</td>
+              <td>24W</td>
+              <td>約2,700円</td>
+              <td>アルミ・uhubctl確認済・個別SW</td>
+              <td>24Wで3台+SSDはギリギリ（余力1.5W）</td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td><span class="badge ok">1位+: アダプタ強化</span></td>
+              <td><strong>RSH-A37S + 社外12V/5A</strong></td>
+              <td>7</td>
+              <td>60W</td>
+              <td>約4,200円</td>
+              <td>全条件クリア・コスパ最良</td>
+              <td>非公式改造・自己責任</td>
+            </tr>
+            <tr style="background:#eff6ff">
+              <td><span class="badge info">2位: uhubctl不問</span></td>
+              <td><strong>atolla 7ポート+1充電</strong></td>
+              <td>7+1</td>
+              <td>20W</td>
+              <td>約3,200円</td>
+              <td>充電専用ポート付・個別SW</td>
+              <td>uhubctl未確認・20Wで電力不足</td>
+            </tr>
+            <tr style="background:#fffbeb">
+              <td><span class="badge warn">3位: 台数減らす</span></td>
+              <td><strong>Rosonway RSH-ST07C</strong></td>
+              <td>7</td>
+              <td>15W</td>
+              <td>約3,500円</td>
+              <td>10Gbps×3ポート・アルミ・Type-C</td>
+              <td>15Wで2台が限界・uhubctl 4/7ポートのみ</td>
+            </tr>
+            <tr style="background:#fffbeb">
+              <td><span class="badge warn">参考: 予算超</span></td>
               <td><strong>Plugable USBC-HUB7BC</strong></td>
               <td>7</td>
               <td>60W</td>
-              <td>全条件クリア、RPi実績</td>
-              <td>5Gbps、プラスチック筐体</td>
-            </tr>
-            <tr style="background:#f0fdf4">
-              <td><span class="badge ok">A: 8ポート以下で確実</span></td>
-              <td><strong>Plugable USB3-HUB7BC</strong></td>
-              <td>7</td>
-              <td>60W</td>
-              <td>全条件クリア、長期実績</td>
-              <td>5Gbps、プラスチック、Type-Cなし</td>
-            </tr>
-            <tr style="background:#eff6ff">
-              <td><span class="badge info">B: 10ポートを許容</span></td>
-              <td><strong>RSHTECH RSH-ST10C-6</strong></td>
-              <td>10</td>
-              <td>60W</td>
-              <td>10Gbps、Type-C下流、アルミ</td>
-              <td>8ポート超</td>
-            </tr>
-            <tr style="background:#fffbeb">
-              <td><span class="badge warn">C: アダプタ自前交換</span></td>
-              <td><strong>Rosonway RSH-A37S + 社外60Wアダプタ</strong></td>
-              <td>7</td>
-              <td>24W→60W</td>
-              <td>アルミ、安い、uhubctl対応</td>
-              <td>非公式改造、自己責任</td>
+              <td>約6,000〜8,000円</td>
+              <td>全条件クリア・RPi実績No.1</td>
+              <td>予算オーバー</td>
             </tr>
           </tbody>
         </table>
+        <div class="risk-box" style="border-left-color:#f59e0b;background:#fffbeb">
+          <h3 style="color:#b45309">条件をゆるめるポイント</h3>
+          <ul style="margin:8px 0">
+            <li><strong>電力（24Wで妥協）:</strong> RSH-A37S付属の24Wでもスマホ3台+SSDは動作する。ただし全デバイスが同時に最大充電すると電力不足で不安定になる可能性あり。実際にはスマホが常に最大900mAを消費するわけではないので、多くの場合は問題ない</li>
+            <li><strong>uhubctl（物理スイッチで妥協）:</strong> ソフトウェア制御を諦め、物理スイッチで手動ON/OFFするなら atolla も選択肢に入る</li>
+            <li><strong>台数（2台に減らす）:</strong> スマホ2台+SSDなら必要電力は13.5W。RSH-ST07Cの15Wでも余裕があり、10Gbps+Type-Cの恩恵を受けられる</li>
+          </ul>
+        </div>
 
         <h3>電力バジェット計算</h3>
         <table>
@@ -143,18 +160,18 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
         </table>
 
         <div class="tip-box">
-          <h3>おすすめの実践構成（スマホ3台+SSD）</h3>
-          <p><strong>8ポート以下にこだわるなら:</strong></p>
+          <h3>おすすめの実践構成（予算5,000円以下）</h3>
+          <p><strong>最安で確実に動かすなら（約2,700円）:</strong></p>
           <ol>
-            <li><strong>Plugable USBC-HUB7BC</strong> を選定（8ポート以下で唯一の60W+uhubctl製品）</li>
-            <li><strong>Pi 4B/5にUSB-Cで接続</strong></li>
-            <li><strong>uhubctlでポート電源を個別制御</strong>（<code>sudo apt install uhubctl</code>）</li>
+            <li><strong>RSH-A37S</strong> を購入（Amazon.co.jp で約2,700円）</li>
+            <li>付属24Wアダプタでまず動作確認（スマホ2台+SSDなら余裕あり）</li>
+            <li>3台同時充電で不安定なら <strong>12V/5Aアダプタ（約1,500円）を追加購入</strong>して交換</li>
+            <li><code>sudo apt install uhubctl && sudo uhubctl</code> でポート制御を確認</li>
           </ol>
-          <p><strong>8ポート超を許容できるなら:</strong></p>
+          <p><strong>予算に余裕があるなら（約6,000〜8,000円）:</strong></p>
           <ol>
-            <li><strong>RSHTECH RSH-ST10C-6</strong>（10ポート / 10Gbps / Type-C下流 / アルミ）が総合最強</li>
-            <li>SSDは10Gbpsポートに接続して転送速度を最大化</li>
-            <li>Type-CスマホはType-Cポートに直結（変換アダプタ不要）</li>
+            <li><strong>Plugable USBC-HUB7BC</strong>（60W付属・全条件クリア・改造不要）</li>
+            <li>または <strong>RSHTECH RSH-ST10C-6</strong>（10Gbps・Type-C・アルミ・60W）</li>
           </ol>
         </div>
       </div>
@@ -360,6 +377,71 @@ a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
             <p class="note">USBC-HUB7BCのType-A上流版。Pi 3B等のUSB-Aポートに接続する場合に選択。長期動作実績あり。</p>
           </article>
         </div>
+      </div>
+    </section>
+
+    <!-- 5,000円以下で買える製品 -->
+    <section>
+      <h2>5,000円以下で買える製品一覧</h2>
+      <div class="body">
+        <p>予算5,000円以下で購入可能なセルフパワーUSBハブ。uhubctl対応・電力・速度の条件をゆるめた比較。</p>
+        <div class="product-grid">
+          <article class="product-card" style="border:2px solid #22c55e">
+            <div><span class="badge ok">予算内ベストバイ</span></div>
+            <h3>Rosonway RSH-A37S</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（USB 3.0 Type-A）</dd>
+              <dt>ACアダプタ</dt><dd>24W（12V/2A）付属</dd>
+              <dt>uhubctl</dt><dd><span class="badge ok">対応（VIA Labs 2109:2822）</span></dd>
+              <dt>筐体</dt><dd><span class="badge ok">アルミ</span></dd>
+              <dt>スイッチ</dt><dd>個別ON/OFFスイッチ付き</dd>
+              <dt>価格</dt><dd><strong>約2,700円</strong></dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B087X2F876">B087X2F876</a></dd>
+            </dl>
+            <p class="note">24Wでスマホ3台+SSDはギリギリ（余力1.5W）だが、実使用では常時最大消費しないため動作する可能性が高い。不安定なら12V/5Aアダプタ（約1,500円）に交換で60W化可能。合計約4,200円でも予算内。</p>
+          </article>
+
+          <article class="product-card">
+            <div><span class="badge info">充電ポート付き</span></div>
+            <h3>atolla USB 3.0 Hub 7+1ポート</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（データ）+ 1ポート（充電専用・最大2.4A）</dd>
+              <dt>ACアダプタ</dt><dd>20W（5V/4A）付属</dd>
+              <dt>uhubctl</dt><dd><span class="badge warn">未確認</span></dd>
+              <dt>筐体</dt><dd>プラスチック</dd>
+              <dt>スイッチ</dt><dd>個別ON/OFFスイッチ付き</dd>
+              <dt>価格</dt><dd><strong>約3,200円</strong>（クーポンで約2,900円）</dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B07JC2NCCC">B07JC2NCCC</a></dd>
+            </dl>
+            <p class="note">充電専用ポート（2.4A）でスマホ1台を急速充電可能。uhubctlソフトウェア制御は未確認だが、物理スイッチでON/OFFは可能。20Wで電力はやや不足。</p>
+          </article>
+
+          <article class="product-card">
+            <div><span class="badge info">10Gbps + Type-C</span></div>
+            <h3>RSHTECH RSH-ST07C</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（USB-C×2 + USB-A×5）</dd>
+              <dt>ACアダプタ</dt><dd>15W（5V/3A）付属</dd>
+              <dt>uhubctl</dt><dd><span class="badge warn">4/7ポートのみ制御可</span></dd>
+              <dt>筐体</dt><dd><span class="badge ok">アルミ</span></dd>
+              <dt>速度</dt><dd>10Gbps×3 + 5Gbps×4</dd>
+              <dt>価格</dt><dd><strong>約3,500円</strong></dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B0CGX8LNMC">B0CGX8LNMC</a></dd>
+            </dl>
+            <p class="note">10GbpsとType-C下流が魅力。ただし15Wではスマホ2台が限界。SSD転送速度を重視し、スマホ接続台数を減らせるなら有力。</p>
+          </article>
+        </div>
+
+        <h3>5,000円以下の製品 電力比較</h3>
+        <table>
+          <thead><tr><th>製品</th><th>価格</th><th>電力</th><th>スマホ3台+SSD</th><th>スマホ2台+SSD</th><th>uhubctl</th></tr></thead>
+          <tbody>
+            <tr style="background:#f0fdf4"><td><strong>RSH-A37S + 社外60Wアダプタ</strong></td><td>約4,200円</td><td>60W</td><td><span class="badge ok">余裕</span></td><td><span class="badge ok">余裕</span></td><td><span class="badge ok">対応</span></td></tr>
+            <tr style="background:#fffbeb"><td><strong>RSH-A37S（付属アダプタ）</strong></td><td>約2,700円</td><td>24W</td><td><span class="badge warn">ギリギリ</span></td><td><span class="badge ok">余裕</span></td><td><span class="badge ok">対応</span></td></tr>
+            <tr style="background:#fffbeb"><td><strong>atolla 7+1ポート</strong></td><td>約3,200円</td><td>20W</td><td><span class="badge warn">不足気味</span></td><td><span class="badge ok">OK</span></td><td><span class="badge warn">未確認</span></td></tr>
+            <tr style="background:#fef2f2"><td><strong>RSH-ST07C</strong></td><td>約3,500円</td><td>15W</td><td><span class="badge todo">不足</span></td><td><span class="badge warn">ギリギリ</span></td><td><span class="badge warn">4/7のみ</span></td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
