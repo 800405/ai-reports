@@ -1,0 +1,1095 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>セルフパワーUSBハブ調査レポート - Raspberry Pi + スマホ給電</title>
+  <style>
+body{margin:0;background:#f6f7f9;color:#172033;font-family:'Segoe UI','Yu Gothic UI',Meiryo,sans-serif;line-height:1.55}
+header{background:#223044;color:white;padding:32px 36px}main{max-width:1180px;margin:0 auto;padding:20px}
+section{background:white;border:1px solid #d9dee8;border-radius:8px;margin:16px 0;overflow:hidden}
+h1{margin:0 0 10px;font-size:34px;line-height:1.15}h2{font-size:21px;margin:0;padding:14px 16px;background:#fbfcfe;border-bottom:1px solid #d9dee8}
+h3{font-size:17px;margin:12px 0 8px}
+.meta{display:flex;gap:22px;flex-wrap:wrap;font-size:18px;font-weight:650}.meta span{display:inline-block}
+.body{padding:14px 16px}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;vertical-align:top;padding:9px;border-bottom:1px solid #d9dee8}
+th{background:#f1f4f8}.badge{display:inline-block;border-radius:999px;padding:2px 8px;font-size:12px;font-weight:650}
+.ok{background:#e7f5ee;color:#157347}.warn{background:#fff4df;color:#a15c00}.todo{background:#ffe8ee;color:#9f1239}.muted{background:#eee;color:#555}
+.info{background:#e8f0fe;color:#1a56db}
+a{color:#2454a6;text-decoration:none}.note{color:#5d6678;font-size:13px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.card{background:white;border:1px solid #d9dee8;border-radius:8px;padding:14px}.card strong{display:block;font-size:26px}.card .label{font-size:13px;color:#5d6678}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
+.product-card{border:1px solid #d9dee8;border-radius:8px;padding:16px;background:#fbfcfe}
+.product-card h3{margin:4px 0 10px;font-size:17px}
+.product-card .spec{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px;margin:8px 0}
+.product-card .spec dt{font-weight:600;color:#5d6678}.product-card .spec dd{margin:0}
+.risk-box{border-left:4px solid #dc2626;background:#fef2f2;padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+.risk-box h3{color:#dc2626;margin-top:0}
+.tip-box{border-left:4px solid #2563eb;background:#eff6ff;padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+.tip-box h3{color:#2563eb;margin-top:0}
+.verdict{background:#f0fdf4;border:2px solid #22c55e;border-radius:8px;padding:16px;margin:16px 0}
+.verdict h3{color:#15803d;margin-top:0}
+.source-list{font-size:13px;color:#5d6678}
+.source-list li{margin:4px 0}
+.usb-table td:nth-child(3),.usb-table td:nth-child(4){text-align:center}
+.confidence{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.confidence.high{color:#157347}.confidence.medium{color:#a15c00}
+@media(max-width:850px){header{padding:26px 22px}h1{font-size:26px}.meta{font-size:15px;gap:10px}main{padding:12px}.product-grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+  <header>
+    <h1>Raspberry Pi 用セルフパワーUSBハブ 調査レポート</h1>
+    <div class="meta">
+      <span>作成日: 2026-06-28</span>
+      <span>用途: ラズパイにスマホを接続し給電+データ通信</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- サマリー -->
+    <div class="cards">
+      <div class="card"><strong>スマホ3台+SSD</strong><span class="label">接続構成</span></div>
+      <div class="card"><strong>18W以上</strong><span class="label">必要電力（5V換算）</span></div>
+      <div class="card"><strong>6,000円以下</strong><span class="label">予算制約（安心メーカー枠）</span></div>
+      <div class="card"><strong>要注意</strong><span class="label">バックフィード（逆流給電）</span></div>
+    </div>
+
+    <!-- Amazonレビューに基づく安全性評価 -->
+    <section>
+      <h2>Amazonレビューに基づく安全性評価</h2>
+      <div class="body">
+        <p>各製品のAmazon.co.jpレビュー・レビューブログ・サクラチェッカーを横断調査し、安全性と信頼性を評価しました。</p>
+
+        <div class="risk-box">
+          <h3>RSH-A37S: Raspberry Pi 4Bとの互換性問題あり</h3>
+          <p>Amazonレビューで<strong>Raspberry Pi 4Bで起動できない</strong>という報告が複数あります。具体的な症状:</p>
+          <ul>
+            <li><strong>RPi 4BのUSBブート時にHUB上のHDDを認識できず起動しない</strong></li>
+            <li>Windows 11接続時、何も接続していなくても<strong>スリープ復帰不可</strong>になる</li>
+            <li>原因推定: <strong>5V給電系がPC側に逆流</strong>し、電源スイッチのGND検出が誤動作</li>
+            <li>同メーカー比較テストで<strong>RSH-518のみRPi 4Bで正常動作</strong>、RSH-A37SとRSH-A35は失敗</li>
+          </ul>
+          <p class="note">ただし「ハブとしての通常使用」（USBブートではなくスマホ接続等）では問題なく動作するレビューも多数。2年以上故障なしとの長期使用報告もあり。RPiからSSDブートする場合は要注意。</p>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>製品</th>
+              <th>安全性</th>
+              <th>Amazonレビュー要旨</th>
+              <th>RPi互換</th>
+              <th>ブランド信頼度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>RSH-A37S</strong></td>
+              <td><span class="badge warn">注意</span></td>
+              <td>RPi 4Bブート不可の報告あり。通常使用は2年以上故障なしの報告。アルミ筐体で放熱良好</td>
+              <td><span class="badge warn">USBブート×</span></td>
+              <td>ROSONWAY/RSHTECH（深圳）。Amazon販売歴7年+</td>
+            </tr>
+            <tr>
+              <td><strong>atolla 7+1</strong></td>
+              <td><span class="badge warn">注意</span></td>
+              <td>30分使用後にLED消灯→<strong>内部から異音（パチパチ）</strong>の報告1件。到着時ポート不良の報告あり。一方で3年問題なしの報告も</td>
+              <td><span class="badge muted">不明</span></td>
+              <td>深圳市睿唯科技（2015年設立）。Amazon販売歴10年+</td>
+            </tr>
+            <tr>
+              <td><strong>JESWO 11ポート</strong></td>
+              <td><span class="badge ok">問題なし</span></td>
+              <td>安全性に関するネガティブ報告なし。Amazon評価4.5。アルミ筐体モデルあり</td>
+              <td><span class="badge muted">不明</span></td>
+              <td>JESWO（深圳・2019年設立）</td>
+            </tr>
+            <tr>
+              <td><strong>UGREEN 7ポート</strong></td>
+              <td><span class="badge ok">良好</span></td>
+              <td>安定動作の報告多数。問題報告なし。大手ブランドの安心感</td>
+              <td><span class="badge muted">不明</span></td>
+              <td><span class="badge ok">大手</span> UGREEN（上場企業）</td>
+            </tr>
+            <tr>
+              <td><strong>RSH-A107</strong></td>
+              <td><span class="badge ok">問題なし</span></td>
+              <td>レビュー数は少ないが安全性の問題報告なし</td>
+              <td><span class="badge muted">不明</span></td>
+              <td>RSHTECH（深圳）</td>
+            </tr>
+            <tr>
+              <td><strong>RSH-ST07C</strong></td>
+              <td><span class="badge ok">問題なし</span></td>
+              <td>新製品でレビュー少。安全性の問題報告なし</td>
+              <td><span class="badge muted">不明</span></td>
+              <td>RSHTECH（深圳）</td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td><strong>サンワダイレクト 400-HUBC32GM</strong></td>
+              <td><span class="badge ok">良好</span></td>
+              <td>Amazon評価4.3（61件）。「Amazon おすすめ」バッジ。HDD認識安定・スイッチ便利との報告。安全性の問題報告なし</td>
+              <td><span class="badge muted">不明</span></td>
+              <td><span class="badge ok">国内大手</span> サンワサプライ（東証上場グループ）</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="risk-box" style="border-left-color:#f59e0b;background:#fffbeb">
+          <h3 style="color:#b45309">USBハブカテゴリのサクラレビュー問題</h3>
+          <p>サクラチェッカーによると、<strong>USBハブカテゴリの55%以上がサクラ商品</strong>とされています。特に中国メーカーの低価格USBハブはレビュー操作のリスクが高いため、以下に注意:</p>
+          <ul>
+            <li>星5レビューが異常に多い（90%超）製品は疑う</li>
+            <li><strong>UGREEN</strong>は上場企業で最もブランド信頼度が高い</li>
+            <li>ROSONWAY/RSHTECHはAmazon販売歴が長く一定の実績あり</li>
+            <li>atolla/JESWOは小規模メーカーだが重大事故の報告はなし</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ユーザー提案製品の評価 -->
+    <section>
+      <h2>ユーザー提案製品の評価: サンワダイレクト 400-HUBC32GM</h2>
+      <div class="body">
+        <div class="product-grid">
+          <article class="product-card" style="border:2px solid #f59e0b;grid-column:1/-1">
+            <div><span class="badge warn">電力不足のため非推奨</span></div>
+            <h3>サンワダイレクト 400-HUBC32GM</h3>
+            <dl class="spec">
+              <dt>ブランド</dt><dd><strong>サンワサプライ（東証上場グループ・国内老舗メーカー）</strong></dd>
+              <dt>ポート数</dt><dd>7ポート（USB-C×2 + USB-A×5）</dd>
+              <dt>USB規格</dt><dd>USB 3.2 Gen1（5Gbps）</dd>
+              <dt>ACアダプタ</dt><dd><span class="badge todo">DC 5V/3A = 15W</span></dd>
+              <dt>充電規格</dt><dd>全ポートBC1.2対応（1ポート最大1.5A）</dd>
+              <dt>上流接続</dt><dd><span class="badge ok">USB-C</span>（Pi 4/5に最適）</dd>
+              <dt>スイッチ</dt><dd>全ポート個別ON/OFFスイッチ付き</dd>
+              <dt>筐体</dt><dd><span class="badge ok">アルミ</span></dd>
+              <dt>uhubctl</dt><dd><span class="badge warn">不明（コントローラチップ非公開）</span></dd>
+              <dt>サイズ</dt><dd>162×42×18mm / 約110g</dd>
+              <dt>Amazon評価</dt><dd>★4.3（61件）・「Amazon おすすめ」バッジ</dd>
+              <dt>価格</dt><dd><strong>¥5,280</strong>（サンワダイレクト直販価格）</dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B0DGPGL74L">B0DGPGL74L</a></dd>
+            </dl>
+
+            <div class="risk-box" style="margin-top:12px">
+              <h3>スマホ3台+SSD構成では電力不足</h3>
+              <table>
+                <thead><tr><th>構成</th><th>必要電力</th><th>AC出力</th><th>過不足</th><th>判定</th></tr></thead>
+                <tbody>
+                  <tr><td>スマホ3台（BC1.2 1.5A）+ SSD</td><td>27W</td><td>15W</td><td><strong>-12W</strong></td><td><span class="badge todo">不可</span></td></tr>
+                  <tr><td>スマホ3台（USB3.0 0.9A）+ SSD</td><td>18W</td><td>15W</td><td><strong>-3W</strong></td><td><span class="badge todo">不足</span></td></tr>
+                  <tr><td>スマホ2台（BC1.2）+ SSD</td><td>19.5W</td><td>15W</td><td><strong>-4.5W</strong></td><td><span class="badge todo">不足</span></td></tr>
+                  <tr><td>スマホ1台（BC1.2）+ SSD</td><td>12W</td><td>15W</td><td>+3W</td><td><span class="badge ok">OK</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="tip-box" style="margin-top:12px">
+              <h3>RSH-A37Sとの比較（アダプタ交換の可否）</h3>
+              <p>RSH-A37Sは<strong>12V DCバレルジャック</strong>なので社外12V/5Aアダプタに交換して60W化が可能（非公式）。一方、400-HUBC32GMは<strong>5V直接給電</strong>のため、アダプタ交換で大幅なワット数アップができません。電力拡張性の面でもRSH-A37Sが優位です。</p>
+            </div>
+
+            <h3 style="margin-top:16px">総合評価</h3>
+            <table>
+              <thead><tr><th>評価項目</th><th>スコア</th><th>コメント</th></tr></thead>
+              <tbody>
+                <tr><td>ブランド信頼性</td><td><span class="badge ok">★★★★★</span></td><td>全候補中最高。国内上場グループ・長年の実績</td></tr>
+                <tr><td>安全性</td><td><span class="badge ok">★★★★★</span></td><td>問題報告なし・国内ブランドの品質管理</td></tr>
+                <tr><td>機能性</td><td><span class="badge ok">★★★★</span></td><td>USB-C×2下流・BC1.2全ポート・個別スイッチ</td></tr>
+                <tr><td>電力</td><td><span class="badge todo">★☆☆☆☆</span></td><td>15Wはスマホ3台+SSDに致命的に不足</td></tr>
+                <tr><td>コスパ</td><td><span class="badge warn">★★☆☆☆</span></td><td>¥5,280で予算超過。15W/¥5,280 vs RSH-A37S 24W/¥2,700</td></tr>
+                <tr><td>uhubctl</td><td><span class="badge warn">★★☆☆☆</span></td><td>コントローラチップ不明・対応は期待薄</td></tr>
+              </tbody>
+            </table>
+
+            <div class="verdict" style="border-color:#f59e0b;background:#fffbeb;margin-top:12px">
+              <h3 style="color:#b45309">結論: 良い製品だが今回の用途には合わない</h3>
+              <p>サンワサプライの製品品質・ブランド信頼性は全候補中最高です。スマホ1台+SSD程度の軽い構成なら安心して使えます。しかし<strong>スマホ3台+SSDの構成では15Wが致命的に不足</strong>し、5Vアダプタのため電力拡張も困難です。予算も¥5,280で超過。今回の要件では<strong>JESWO 11ポート（36W/¥3,689）</strong>や<strong>RSH-A37S（24W→60W化/¥4,200）</strong>の方が適しています。</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 安心メーカー枠（予算6,000円以下） -->
+    <section>
+      <h2>安心メーカー枠: 予算6,000円以下のおすすめ</h2>
+      <div class="body">
+        <p>国内大手メーカー・上場企業ブランドに絞り、予算6,000円以下でスマホ3台+SSD（18W以上必要）を満たす製品を調査しました。</p>
+
+        <div class="verdict" style="border-color:#2563eb;background:#eff6ff">
+          <h3 style="color:#1d4ed8">安心メーカー枠のベストバイ</h3>
+          <p><strong>サンワサプライ 400-HUBA23GM（48W・10ポート・¥5,980）</strong>が安心メーカー枠で最も電力に余裕があり、スマホ3台+SSDに十分対応できます。同じサンワサプライの400-HUBC32GM（15W）とは別モデルで、ACアダプタが12V/4A = 48Wと3倍以上の電力を確保。予算に余裕があるなら<strong>Plugable USBC-HUB7BC（60W・¥6,000〜）</strong>もRPi実績No.1で有力です。</p>
+        </div>
+
+        <div class="product-grid">
+          <article class="product-card" style="border:2px solid #2563eb">
+            <div><span class="badge ok">安心メーカー枠 1位</span></div>
+            <h3>サンワサプライ 400-HUBA23GM</h3>
+            <dl class="spec">
+              <dt>ブランド</dt><dd><strong>サンワサプライ（国内大手メーカー）</strong></dd>
+              <dt>ポート数</dt><dd><strong>10ポート</strong>（全USB 3.2 Gen1 Type-A）</dd>
+              <dt>ACアダプタ</dt><dd><span class="badge ok">DC 12V/4A = 48W</span></dd>
+              <dt>供給電流</dt><dd>最大9,600mA（全ポート合計）</dd>
+              <dt>USB規格</dt><dd>USB 3.2 Gen1（5Gbps）</dd>
+              <dt>上流接続</dt><dd>USB-A（Pi 4/5のUSB-Aポートに直結）</dd>
+              <dt>スイッチ</dt><dd>全ポート個別ON/OFFスイッチ付き</dd>
+              <dt>充電機能</dt><dd>USB充電器機能あり（スマホ・タブレット充電対応）</dd>
+              <dt>uhubctl</dt><dd><span class="badge warn">不明</span></dd>
+              <dt>サイズ</dt><dd>W42.4×D175×H18.2mm / 約122g</dd>
+              <dt>ケーブル長</dt><dd>約1.1m</dd>
+              <dt>Amazon評価</dt><dd>レビュー良好・楽天1位受賞</dd>
+              <dt>価格</dt><dd><strong>¥5,980</strong></dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B0CKDN4Q3N">B0CKDN4Q3N</a></dd>
+            </dl>
+            <table style="margin-top:12px">
+              <thead><tr><th>構成</th><th>必要電力</th><th>AC出力</th><th>余力</th><th>判定</th></tr></thead>
+              <tbody>
+                <tr><td>スマホ3台+SSD</td><td>18W</td><td>48W</td><td><strong>+30W</strong></td><td><span class="badge ok">余裕</span></td></tr>
+                <tr><td>スマホ3台+SSD（BC1.2充電時）</td><td>27W</td><td>48W</td><td><strong>+21W</strong></td><td><span class="badge ok">余裕</span></td></tr>
+              </tbody>
+            </table>
+            <p class="note">同じサンワサプライでも400-HUBC32GM（15W）とは全く別の製品。48Wで電力に大きな余裕があり、10ポートで将来の拡張にも対応。上流がUSB-AのためPi 4/5のUSB-Aデータポートに直接接続。USBケーブルがやや短いとのレビューあり。</p>
+          </article>
+
+          <article class="product-card" style="border:2px solid #22c55e">
+            <div><span class="badge ok">安心メーカー枠 2位</span></div>
+            <h3>UGREEN 7ポート（24W・アルミ）</h3>
+            <dl class="spec">
+              <dt>ブランド</dt><dd><strong>UGREEN（深圳・上場企業）</strong></dd>
+              <dt>ポート数</dt><dd>7ポート（USB 3.0 Type-A）</dd>
+              <dt>ACアダプタ</dt><dd><span class="badge warn">DC 12V/2A = 24W</span></dd>
+              <dt>USB規格</dt><dd>USB 3.0（5Gbps）</dd>
+              <dt>上流接続</dt><dd>USB-C to Aケーブル（1m）</dd>
+              <dt>スイッチ</dt><dd>全ポート個別スイッチ付き</dd>
+              <dt>筐体</dt><dd><span class="badge ok">アルミ合金</span></dd>
+              <dt>uhubctl</dt><dd><span class="badge warn">不明</span></dd>
+              <dt>価格</dt><dd><strong>¥3,824</strong>（セール時）/ 通常¥4,666</dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B09DCK46PM">B09DCK46PM</a></dd>
+            </dl>
+            <p class="note">上場企業ブランドの安心感+アルミ筐体の耐久性。24Wはスマホ3台+SSDに対しギリギリ（余力6W）だが、常時最大消費はしないため通常は動作する。コスパ最高クラス。</p>
+          </article>
+
+          <article class="product-card">
+            <div><span class="badge info">安心メーカー枠 参考</span></div>
+            <h3>Plugable USBC-HUB7BC（60W）</h3>
+            <dl class="spec">
+              <dt>ブランド</dt><dd><strong>Plugable（米国・RPi互換テスト自社実施）</strong></dd>
+              <dt>ポート数</dt><dd>7ポート（USB 3.0 Type-A）</dd>
+              <dt>ACアダプタ</dt><dd><span class="badge ok">60W</span></dd>
+              <dt>uhubctl</dt><dd><span class="badge ok">対応（VIA Labs 2109:0817）</span></dd>
+              <dt>上流接続</dt><dd>USB-C</dd>
+              <dt>筐体</dt><dd>プラスチック</dd>
+              <dt>価格</dt><dd><strong>約¥6,000〜8,000</strong>（変動大）</dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B096YKDYX5">B096YKDYX5</a></dd>
+            </dl>
+            <p class="note">RPi実績No.1・uhubctl確認済み・60W。日本のメーカーではないが米国Plugable社はRPi互換テストを自社で実施しており信頼性は高い。¥6,000台で買えるタイミングもあり。</p>
+          </article>
+        </div>
+
+        <h3>安心メーカー枠 比較表</h3>
+        <table>
+          <thead><tr><th>製品</th><th>ブランド</th><th>ポート</th><th>電力</th><th>3台+SSD余力</th><th>uhubctl</th><th>筐体</th><th>価格</th></tr></thead>
+          <tbody>
+            <tr style="background:#eff6ff">
+              <td><strong>400-HUBA23GM</strong></td>
+              <td>サンワサプライ</td>
+              <td>10</td>
+              <td><span class="badge ok">48W</span></td>
+              <td><strong>+30W</strong></td>
+              <td><span class="badge warn">不明</span></td>
+              <td>—</td>
+              <td>¥5,980</td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td><strong>UGREEN 7ポート</strong></td>
+              <td>UGREEN（上場）</td>
+              <td>7</td>
+              <td>24W</td>
+              <td>+6W</td>
+              <td><span class="badge warn">不明</span></td>
+              <td><span class="badge ok">アルミ</span></td>
+              <td>¥3,824</td>
+            </tr>
+            <tr>
+              <td><strong>Plugable USBC-HUB7BC</strong></td>
+              <td>Plugable（米国）</td>
+              <td>7</td>
+              <td><span class="badge ok">60W</span></td>
+              <td><strong>+42W</strong></td>
+              <td><span class="badge ok">対応</span></td>
+              <td>プラスチック</td>
+              <td>¥6,000〜</td>
+            </tr>
+            <tr style="background:#fef2f2">
+              <td><del>400-HUBC32GM</del></td>
+              <td>サンワサプライ</td>
+              <td>7</td>
+              <td><span class="badge todo">15W</span></td>
+              <td><strong>-3W</strong></td>
+              <td><span class="badge warn">不明</span></td>
+              <td><span class="badge ok">アルミ</span></td>
+              <td>¥5,280</td>
+            </tr>
+            <tr style="background:#fef2f2">
+              <td><del>ELECOM U3H-T719SBK</del></td>
+              <td>ELECOM</td>
+              <td>7</td>
+              <td>~31W</td>
+              <td>+13W</td>
+              <td><span class="badge warn">不明</span></td>
+              <td>プラスチック</td>
+              <td><span class="badge todo">¥8,990 予算超</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">ELECOM U3H-T719SBK（¥8,990）とBUFFALO BSH4Aシリーズ（4ポート・15W程度）は予算超過またはポート不足のため候補外。サンワサプライ 400-HUBA070BK2（¥4,980・7ポート）はACアダプタのワット数が非公開で電力評価不能。PC連動自動オフ機能がRPiの常時運用と相性が悪い可能性もあり。</p>
+      </div>
+    </section>
+
+    <!-- 結論 -->
+    <section>
+      <h2>結論・おすすめ構成</h2>
+      <div class="body">
+        <div class="verdict">
+          <h3>安全性考慮後のベストバイ（予算5,000円以下）</h3>
+          <p><strong>安全性を最優先</strong>するなら、ブランド信頼度が高い <strong>UGREEN 7ポート（約3,824円）</strong>が最も安心です。ただしuhubctlは未確認。<strong>uhubctl必須</strong>なら <strong>RSH-A37S（約2,700円）</strong>が依然として最有力ですが、<strong>RPi 4BでのUSBブートには使わない</strong>よう注意してください（スマホ接続・データ通信は問題なし）。<strong>電力重視</strong>なら <strong>JESWO 11ポート（36W・約3,689円）</strong>が安全性報告もクリーンでバランス良好です。</p>
+        </div>
+
+        <h3>安全性考慮後の選択肢（予算5,000円以下）</h3>
+        <table>
+          <thead><tr><th>方針</th><th>製品</th><th>ポート</th><th>電力</th><th>価格</th><th>安全性</th><th>メリット</th><th>デメリット</th></tr></thead>
+          <tbody>
+            <tr style="background:#f0fdf4">
+              <td><span class="badge ok">1位: 安全+電力</span></td>
+              <td><strong>JESWO 11ポート</strong></td>
+              <td>7+4</td>
+              <td>36W</td>
+              <td>約3,689円</td>
+              <td><span class="badge ok">問題なし</span></td>
+              <td>36Wで電力十分・安全性報告クリーン</td>
+              <td>uhubctl未確認・11ポート</td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td><span class="badge ok">2位: ブランド安心</span></td>
+              <td><strong>UGREEN 7ポート</strong></td>
+              <td>7</td>
+              <td>24W</td>
+              <td>約3,824円</td>
+              <td><span class="badge ok">良好</span></td>
+              <td>上場企業・安定動作・アルミ</td>
+              <td>uhubctl未確認・24Wでギリギリ</td>
+            </tr>
+            <tr style="background:#eff6ff">
+              <td><span class="badge info">3位: uhubctl重視</span></td>
+              <td><strong>RSH-A37S</strong></td>
+              <td>7</td>
+              <td>24W</td>
+              <td>約2,700円</td>
+              <td><span class="badge warn">RPiブート注意</span></td>
+              <td>uhubctl確認済・アルミ・最安</td>
+              <td>RPi USBブート不可の報告・24W</td>
+            </tr>
+            <tr style="background:#eff6ff">
+              <td><span class="badge info">3位+: アダプタ強化</span></td>
+              <td><strong>RSH-A37S + 社外12V/5A</strong></td>
+              <td>7</td>
+              <td>60W</td>
+              <td>約4,200円</td>
+              <td><span class="badge warn">RPiブート注意</span></td>
+              <td>uhubctl+60W・コスパ最良</td>
+              <td>非公式改造・RPiブート問題</td>
+            </tr>
+            <tr style="background:#fffbeb">
+              <td><span class="badge warn">参考: 予算超</span></td>
+              <td><strong>Plugable USBC-HUB7BC</strong></td>
+              <td>7</td>
+              <td>60W</td>
+              <td>約6,000〜8,000円</td>
+              <td><span class="badge ok">最も安全</span></td>
+              <td>全条件クリア・RPi実績No.1</td>
+              <td>予算オーバー</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="risk-box" style="border-left-color:#f59e0b;background:#fffbeb">
+          <h3 style="color:#b45309">条件をゆるめるポイント</h3>
+          <ul style="margin:8px 0">
+            <li><strong>電力（24Wで妥協）:</strong> RSH-A37S付属の24Wでもスマホ3台+SSDは動作する。ただし全デバイスが同時に最大充電すると電力不足で不安定になる可能性あり。実際にはスマホが常に最大900mAを消費するわけではないので、多くの場合は問題ない</li>
+            <li><strong>uhubctl（物理スイッチで妥協）:</strong> ソフトウェア制御を諦め、物理スイッチで手動ON/OFFするなら atolla も選択肢に入る</li>
+            <li><strong>台数（2台に減らす）:</strong> スマホ2台+SSDなら必要電力は13.5W。RSH-ST07Cの15Wでも余裕があり、10Gbps+Type-Cの恩恵を受けられる</li>
+          </ul>
+        </div>
+
+        <h3>電力バジェット計算</h3>
+        <table>
+          <thead><tr><th>デバイス</th><th>台数</th><th>最大電流</th><th>消費電力（5V）</th></tr></thead>
+          <tbody>
+            <tr><td>スマートフォン（USB 3.0）</td><td>3台</td><td>各900mA</td><td>13.5W</td></tr>
+            <tr><td>外付けSSD（USB 3.0）</td><td>1台</td><td>約900mA</td><td>4.5W</td></tr>
+            <tr><td colspan="3"><strong>合計（5V側）</strong></td><td><strong>18W</strong></td></tr>
+            <tr><td colspan="3">12V→5V変換ロス（効率80%想定）</td><td>+4.5W</td></tr>
+            <tr><td colspan="3"><strong>ACアダプタ必要電力</strong></td><td><strong>約22.5W以上</strong></td></tr>
+          </tbody>
+        </table>
+
+        <h3>8ポート以下の製品 電力判定</h3>
+        <table style="margin-top:12px">
+          <thead><tr><th>製品</th><th>ポート</th><th>ACアダプタ</th><th>余力</th><th>判定</th></tr></thead>
+          <tbody>
+            <tr style="background:#f0fdf4"><td><strong>Plugable USBC-HUB7BC</strong></td><td>7</td><td>60W</td><td>+37.5W</td><td><span class="badge ok">十分・RPi実績No.1</span></td></tr>
+            <tr style="background:#f0fdf4"><td><strong>Plugable USB3-HUB7BC</strong></td><td>7</td><td>60W</td><td>+37.5W</td><td><span class="badge ok">十分・長期実績</span></td></tr>
+            <tr style="background:#fffbeb"><td>Rosonway RSH-A37S（アダプタ交換時）</td><td>7</td><td>24W→60W</td><td>+37.5W</td><td><span class="badge warn">非公式・自己責任</span></td></tr>
+            <tr style="background:#fef2f2"><td><del>Rosonway RSH-A37S（付属品のまま）</del></td><td>7</td><td>24W</td><td>+1.5W</td><td><span class="badge todo">電力不足</span></td></tr>
+            <tr style="background:#fef2f2"><td><del>Rosonway RSH-518C</del></td><td>7</td><td>10W</td><td>不足</td><td><span class="badge todo">電力不足</span></td></tr>
+            <tr style="background:#fef2f2"><td><del>AmazonBasics HU9003V1EBL</del></td><td>7</td><td>36W</td><td>+13.5W</td><td><span class="badge warn">日本入手性不明</span></td></tr>
+          </tbody>
+        </table>
+
+        <h3>参考: 8ポート超の有力製品</h3>
+        <table>
+          <thead><tr><th>製品</th><th>ポート</th><th>ACアダプタ</th><th>余力</th><th>特徴</th></tr></thead>
+          <tbody>
+            <tr><td><strong>RSHTECH RSH-ST10C-6</strong></td><td>10</td><td>60W</td><td>+37.5W</td><td>10Gbps + Type-C下流 + アルミ</td></tr>
+            <tr><td><strong>Rosonway RSH-A13</strong></td><td>13</td><td>72W</td><td>+49.5W</td><td>全ポート10Gbps + アルミ</td></tr>
+            <tr><td><strong>Rosonway RSH-A16</strong></td><td>16</td><td>100W</td><td>+77.5W</td><td>電力最強 + PSE認証 + アルミ</td></tr>
+          </tbody>
+        </table>
+
+        <div class="tip-box">
+          <h3>おすすめの実践構成（予算5,000円以下・安全性重視）</h3>
+          <p><strong>安全+電力バランス重視なら（約3,689円）:</strong></p>
+          <ol>
+            <li><strong>JESWO 11ポート（36W）</strong>を購入 — Amazonレビューで安全性問題なし・36Wで電力十分</li>
+            <li>スマホは充電ポートに接続（急速充電）、SSDはデータポートに接続</li>
+            <li>uhubctlは使えない可能性が高いが、物理スイッチでON/OFF可能</li>
+          </ol>
+          <p><strong>ブランド安心重視なら（約3,824円）:</strong></p>
+          <ol>
+            <li><strong>UGREEN 7ポート（24W）</strong>— 上場企業ブランド・アルミ筐体・安定動作の評判</li>
+            <li>24Wで3台+SSDはギリギリだが、大手ブランドの品質管理は信頼できる</li>
+          </ol>
+          <p><strong>uhubctl必須なら（約2,700〜4,200円）:</strong></p>
+          <ol>
+            <li><strong>RSH-A37S</strong>を購入 — uhubctl確認済・最安だがRPiブート注意</li>
+            <li><strong>SSDからのUSBブートには使わない</strong>（認識不可の報告あり）</li>
+            <li>スマホ接続・データ通信のみなら通常動作。必要なら社外アダプタで60W化</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- USB規格の給電能力 -->
+    <section>
+      <h2>USB規格ごとの給電能力</h2>
+      <div class="body">
+        <table class="usb-table">
+          <thead><tr><th>USB規格</th><th>最大電流</th><th>最大電力</th><th>スマホ給電</th><th>備考</th></tr></thead>
+          <tbody>
+            <tr><td>USB 2.0 標準</td><td>500mA</td><td>2.5W</td><td><span class="badge warn">不足気味</span></td><td>多くのセルフパワーハブはこの規格</td></tr>
+            <tr><td>USB 3.0</td><td>900mA</td><td>4.5W</td><td><span class="badge warn">最低限</span></td><td>Pi 4B以降はUSB 3.0ポート搭載</td></tr>
+            <tr><td>USB BC 1.2</td><td>1.5A</td><td>7.5W</td><td><span class="badge ok">十分</span></td><td>充電器・機器双方の対応が必要</td></tr>
+            <tr><td>USB PD</td><td>2A〜5A</td><td>10W〜100W</td><td><span class="badge ok">十分</span></td><td>対応ハブは高価</td></tr>
+          </tbody>
+        </table>
+        <p class="note">スマホの充電を維持するには最低500mA、快適に使うなら1A以上が推奨です。USB 2.0ハブでは「充電中」表示にならない場合があります。</p>
+
+        <h3>USB通信帯域（スマホ3台+SSD同時接続時）</h3>
+        <table>
+          <thead><tr><th>デバイス</th><th>接続規格</th><th>実効帯域</th><th>典型的な用途</th><th>帯域負荷</th></tr></thead>
+          <tbody>
+            <tr><td>スマホ（ADB/テザリング）</td><td>USB 2.0 HS</td><td>最大480Mbps</td><td>ADB: ~30Mbps / テザリング: ~100Mbps</td><td><span class="badge ok">低い</span></td></tr>
+            <tr><td>外付けSSD</td><td>USB 3.0 SS</td><td>最大5Gbps</td><td>ファイル転送: 300〜400MB/s</td><td><span class="badge warn">高い</span></td></tr>
+          </tbody>
+        </table>
+        <p><strong>USB 3.0ハブの総帯域は5Gbps（共有）です。</strong>スマホ3台のADB/テザリングは帯域をほぼ消費しません（計300Mbps程度）。SSDの大容量ファイル転送中にスマホ通信が遅くなることも実用上ほぼありません。帯域は心配不要です。</p>
+        <div class="tip-box">
+          <h3>ハブコントローラチップの違い</h3>
+          <table>
+            <thead><tr><th>製品</th><th>チップ</th><th>VID:PID</th><th>帯域性能</th></tr></thead>
+            <tbody>
+              <tr><td>Plugable USBC-HUB7BC</td><td>VIA Labs VL817</td><td>2109:0817</td><td>USB 3.1 Gen 1（5Gbps）</td></tr>
+              <tr><td>Rosonway RSH-A10</td><td>Realtek RTL5411</td><td>0BDA:0411</td><td>USB 3.0（5Gbps）</td></tr>
+              <tr><td>Rosonway RSH-A37S</td><td>VIA Labs VL822</td><td>2109:2822</td><td>USB 3.1 Gen 1（5Gbps）</td></tr>
+            </tbody>
+          </table>
+          <p>3製品とも<strong>5Gbpsで帯域に差はありません</strong>。スマホのADB/テザリングはUSB 2.0速度で動作するため、SSDと帯域を奪い合うこともありません。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 製品比較表（60W以上） -->
+    <section>
+      <h2>製品比較表（60W以上・ポートON/OFF・uhubctl対応）</h2>
+      <div class="body">
+        <p>uhubctl互換性リスト・GitHub Issues・Amazon.co.jpを横断調査し、<strong>全条件</strong>（60W以上 / 4ポート以上 / ポート個別ON/OFF / ACアダプタ付き / 日本で購入可 / Linux対応）を満たす<strong>5製品</strong>を特定しました。</p>
+
+        <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>推奨</th>
+              <th>製品名</th>
+              <th>ポート数</th>
+              <th>USB規格</th>
+              <th>最大速度</th>
+              <th>ACアダプタ</th>
+              <th>Type-Cポート</th>
+              <th>筐体</th>
+              <th>uhubctl VID:PID</th>
+              <th>価格目安</th>
+              <th>Amazon</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#f0fdf4">
+              <td><span class="badge ok">1位</span></td>
+              <td><strong>RSHTECH RSH-ST10C-6</strong></td>
+              <td>10</td>
+              <td>3.2 Gen2</td>
+              <td><strong>10Gbps</strong></td>
+              <td><strong>60W</strong></td>
+              <td><span class="badge ok">あり（下流）</span></td>
+              <td><span class="badge ok">アルミ</span></td>
+              <td>0BDA:0423</td>
+              <td>約6,000〜9,000円</td>
+              <td><a href="https://www.amazon.co.jp/s?k=RSHTECH+RSH-ST10C-6">検索</a></td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td><span class="badge ok">2位</span></td>
+              <td><strong>Rosonway RSH-A16</strong></td>
+              <td>16</td>
+              <td>3.0</td>
+              <td>5Gbps</td>
+              <td><strong>100W</strong></td>
+              <td><span class="badge muted">なし</span></td>
+              <td><span class="badge ok">アルミ</span></td>
+              <td>0BDA:0411</td>
+              <td>約6,000〜8,000円</td>
+              <td><a href="https://www.amazon.co.jp/dp/B08HHZQ728">B08HHZQ728</a></td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td><span class="badge ok">3位</span></td>
+              <td><strong>Rosonway RSH-A13</strong></td>
+              <td>13</td>
+              <td>3.2 Gen2</td>
+              <td><strong>10Gbps</strong></td>
+              <td><strong>72W</strong></td>
+              <td><span class="badge muted">なし</span></td>
+              <td><span class="badge ok">アルミ</span></td>
+              <td>2109:2822</td>
+              <td>約7,000〜8,000円</td>
+              <td><a href="https://www.amazon.co.jp/dp/B09GBDPGY3">B09GBDPGY3</a></td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td><span class="badge ok">4位</span></td>
+              <td><strong>Plugable USBC-HUB7BC</strong></td>
+              <td>7</td>
+              <td>3.0</td>
+              <td>5Gbps</td>
+              <td><strong>60W</strong></td>
+              <td><span class="badge ok">上流のみ</span></td>
+              <td><span class="badge warn">プラスチック</span></td>
+              <td>2109:0817</td>
+              <td>約6,000〜8,000円</td>
+              <td><a href="https://www.amazon.co.jp/dp/B096YKDYX5">B096YKDYX5</a></td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td><span class="badge ok">5位</span></td>
+              <td><strong>Plugable USB3-HUB7BC</strong></td>
+              <td>7</td>
+              <td>3.0</td>
+              <td>5Gbps</td>
+              <td><strong>60W</strong></td>
+              <td><span class="badge muted">なし</span></td>
+              <td><span class="badge warn">プラスチック</span></td>
+              <td>2109:0813</td>
+              <td>約5,000〜7,000円</td>
+              <td><a href="https://www.amazon.co.jp/s?k=Plugable+USB3-HUB7BC">検索</a></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="note">uhubctl互換性リストおよびGitHub Issues (#14, #276, #407, #423, #601等) に基づく。物理スイッチの有無はuhubctlソフトウェア制御とは別。</p>
+      </div>
+    </section>
+
+    <!-- 8ポート以下 詳細比較 -->
+    <section>
+      <h2>8ポート以下の製品（全条件クリア）</h2>
+      <div class="body">
+
+        <h3>スマホ3台+SSD構成での評価</h3>
+        <table>
+          <thead><tr><th>製品</th><th>ポート</th><th>電力</th><th>余力</th><th>速度</th><th>Type-C下流</th><th>筐体</th><th>上流接続</th></tr></thead>
+          <tbody>
+            <tr style="background:#f0fdf4">
+              <td><strong>Plugable USBC-HUB7BC</strong></td>
+              <td>7</td>
+              <td>60W</td>
+              <td>+37.5W</td>
+              <td>5Gbps</td>
+              <td><span class="badge muted">なし</span></td>
+              <td><span class="badge warn">プラスチック</span></td>
+              <td><span class="badge ok">USB-C</span></td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td><strong>Plugable USB3-HUB7BC</strong></td>
+              <td>7</td>
+              <td>60W</td>
+              <td>+37.5W</td>
+              <td>5Gbps</td>
+              <td><span class="badge muted">なし</span></td>
+              <td><span class="badge warn">プラスチック</span></td>
+              <td>USB-A</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="product-grid" style="margin-top:16px">
+          <article class="product-card" style="border:2px solid #22c55e">
+            <div><span class="badge ok">8ポート以下で最推奨</span></div>
+            <h3>Plugable USBC-HUB7BC</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（USB 3.0 Type-A）</dd>
+              <dt>USB規格</dt><dd>USB 3.0（5Gbps）</dd>
+              <dt>ACアダプタ</dt><dd><strong>60W</strong>付属（余力+37.5W）</dd>
+              <dt>ポートON/OFF</dt><dd>uhubctl対応（VIA Labs 2109:0817、6/7ポート制御可）</dd>
+              <dt>上流接続</dt><dd><strong>USB-C</strong>（Pi 4/5に最適）</dd>
+              <dt>筐体</dt><dd>プラスチック</dd>
+              <dt>ブランド</dt><dd>Plugable（RPi互換テスト自社実施）</dd>
+              <dt>Amazon ASIN</dt><dd><a href="https://www.amazon.co.jp/dp/B096YKDYX5">B096YKDYX5</a></dd>
+              <dt>価格</dt><dd>約6,000〜8,000円</dd>
+            </dl>
+            <p class="note"><strong>8ポート以下で全条件を満たす最良の選択肢。</strong>Plugable社がRPi互換テストを自社実施。USB-C上流でPi 4/5に直結。60Wでスマホ3台+SSDに十分な余力。弱点はプラスチック筐体と5Gbps止まり。</p>
+          </article>
+
+          <article class="product-card">
+            <div><span class="badge info">Type-A上流版</span></div>
+            <h3>Plugable USB3-HUB7BC</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（USB 3.0 Type-A）</dd>
+              <dt>USB規格</dt><dd>USB 3.0（5Gbps）</dd>
+              <dt>ACアダプタ</dt><dd><strong>60W</strong>付属（余力+37.5W）</dd>
+              <dt>ポートON/OFF</dt><dd>uhubctl対応（VIA Labs 2109:0813）</dd>
+              <dt>上流接続</dt><dd>USB-A（従来型）</dd>
+              <dt>筐体</dt><dd>プラスチック</dd>
+              <dt>価格</dt><dd>約5,000〜7,000円</dd>
+            </dl>
+            <p class="note">USBC-HUB7BCのType-A上流版。Pi 3B等のUSB-Aポートに接続する場合に選択。長期動作実績あり。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5,000円以下で買える製品 -->
+    <section>
+      <h2>5,000円以下で買える製品一覧</h2>
+      <div class="body">
+        <p>予算5,000円以下で購入可能なセルフパワーUSBハブ。uhubctl対応・電力・速度の条件をゆるめた比較。</p>
+        <div class="product-grid">
+          <article class="product-card" style="border:2px solid #22c55e">
+            <div><span class="badge ok">予算内ベストバイ</span></div>
+            <h3>Rosonway RSH-A37S</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（USB 3.0 Type-A）</dd>
+              <dt>ACアダプタ</dt><dd>24W（12V/2A）付属</dd>
+              <dt>uhubctl</dt><dd><span class="badge ok">対応（VIA Labs 2109:2822）</span></dd>
+              <dt>筐体</dt><dd><span class="badge ok">アルミ</span></dd>
+              <dt>スイッチ</dt><dd>個別ON/OFFスイッチ付き</dd>
+              <dt>価格</dt><dd><strong>約2,700円</strong></dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B087X2F876">B087X2F876</a></dd>
+            </dl>
+            <p class="note">24Wでスマホ3台+SSDはギリギリ（余力1.5W）だが、実使用では常時最大消費しないため動作する可能性が高い。不安定なら12V/5Aアダプタ（約1,500円）に交換で60W化可能。合計約4,200円でも予算内。</p>
+          </article>
+
+          <article class="product-card">
+            <div><span class="badge info">充電ポート付き</span></div>
+            <h3>atolla USB 3.0 Hub 7+1ポート</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（データ）+ 1ポート（充電専用・最大2.4A）</dd>
+              <dt>ACアダプタ</dt><dd>20W（5V/4A）付属</dd>
+              <dt>uhubctl</dt><dd><span class="badge warn">未確認</span></dd>
+              <dt>筐体</dt><dd>プラスチック</dd>
+              <dt>スイッチ</dt><dd>個別ON/OFFスイッチ付き</dd>
+              <dt>価格</dt><dd><strong>約3,200円</strong>（クーポンで約2,900円）</dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B07JC2NCCC">B07JC2NCCC</a></dd>
+            </dl>
+            <p class="note">充電専用ポート（2.4A）でスマホ1台を急速充電可能。uhubctlソフトウェア制御は未確認だが、物理スイッチでON/OFFは可能。20Wで電力はやや不足。</p>
+          </article>
+
+          <article class="product-card">
+            <div><span class="badge info">全ポート10Gbps・24W</span></div>
+            <h3>RSHTECH RSH-A107</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（USB 3.2 Gen2 Type-A）</dd>
+              <dt>ACアダプタ</dt><dd>24W（12V/2A）付属</dd>
+              <dt>uhubctl</dt><dd><span class="badge ok">対応見込み（VIA Labs系）</span></dd>
+              <dt>筐体</dt><dd><span class="badge ok">アルミ</span></dd>
+              <dt>速度</dt><dd><strong>全ポート10Gbps</strong></dd>
+              <dt>価格</dt><dd><strong>約4,000〜5,000円</strong></dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B0BRXJ3RDV">B0BRXJ3RDV</a></dd>
+            </dl>
+            <p class="note">RSH-A37Sの10Gbps版。全ポート10Gbpsで24Wアダプタ付属。SSD転送速度を重視するなら最適。2-in-1ケーブル（USB-C/A両対応）。価格が5,000円ギリギリだがタイミングにより予算内。</p>
+          </article>
+
+          <article class="product-card">
+            <div><span class="badge info">10Gbps + Type-C</span></div>
+            <h3>RSHTECH RSH-ST07C</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（USB-C×2 + USB-A×5）</dd>
+              <dt>ACアダプタ</dt><dd>15W（5V/3A）付属</dd>
+              <dt>uhubctl</dt><dd><span class="badge warn">4/7ポートのみ制御可</span></dd>
+              <dt>筐体</dt><dd><span class="badge ok">アルミ</span></dd>
+              <dt>速度</dt><dd>10Gbps×3 + 5Gbps×4</dd>
+              <dt>価格</dt><dd><strong>約3,500円</strong></dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B0CGX8LNMC">B0CGX8LNMC</a></dd>
+            </dl>
+            <p class="note">10GbpsとType-C下流が魅力。ただし15Wではスマホ2台が限界。SSD転送速度を重視し、スマホ接続台数を減らせるなら有力。</p>
+          </article>
+        </div>
+
+        <h3>uhubctl不問なら: 電力重視の低価格モデル</h3>
+        <p>uhubctlソフトウェア制御を諦め、物理スイッチでの手動ON/OFFでOKなら、電力が大きい以下の製品も候補になります。</p>
+        <div class="product-grid">
+          <article class="product-card">
+            <div><span class="badge warn">uhubctl未確認・電力◎</span></div>
+            <h3>atolla 7+4ポート（48W版）</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（データ）+ 4ポート（充電専用）</dd>
+              <dt>ACアダプタ</dt><dd><strong>48W（12V/4A）</strong>付属</dd>
+              <dt>uhubctl</dt><dd><span class="badge warn">未確認</span></dd>
+              <dt>筐体</dt><dd>プラスチック</dd>
+              <dt>スイッチ</dt><dd>個別ON/OFFスイッチ付き</dd>
+              <dt>価格</dt><dd><strong>約4,200〜4,500円</strong></dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B07CP39CYV">B07CP39CYV</a></dd>
+            </dl>
+            <p class="note">48Wで電力は十分（余力+25.5W）。充電専用ポートにスマホを繋げば急速充電も可能。uhubctlが不要なら予算内で電力最強。</p>
+          </article>
+
+          <article class="product-card">
+            <div><span class="badge warn">uhubctl未確認・36W</span></div>
+            <h3>JESWO 11ポート（36W）</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（データ）+ 4ポート（充電専用）</dd>
+              <dt>ACアダプタ</dt><dd><strong>36W（12V/3A）</strong>付属</dd>
+              <dt>uhubctl</dt><dd><span class="badge warn">未確認</span></dd>
+              <dt>筐体</dt><dd>プラスチック</dd>
+              <dt>価格</dt><dd><strong>約3,689円</strong>（26%オフセール）</dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B0C2YD1SK9">B0C2YD1SK9</a></dd>
+            </dl>
+            <p class="note">36Wで3台+SSDに余力あり（+13.5W）。11ポートだが安くて電力十分。uhubctlソフト制御は未確認。</p>
+          </article>
+
+          <article class="product-card">
+            <div><span class="badge warn">uhubctl未確認・アルミ</span></div>
+            <h3>UGREEN 7ポート（24W）</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>7ポート（USB 3.0 Type-A）</dd>
+              <dt>ACアダプタ</dt><dd>24W（12V/2A）付属</dd>
+              <dt>uhubctl</dt><dd><span class="badge warn">未確認</span></dd>
+              <dt>筐体</dt><dd><span class="badge ok">アルミ</span></dd>
+              <dt>スイッチ</dt><dd>個別ON/OFFスイッチ付き</dd>
+              <dt>価格</dt><dd><strong>約3,824円</strong>（セール時）</dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B09DCK46PM">B09DCK46PM</a></dd>
+            </dl>
+            <p class="note">RSH-A37Sとほぼ同スペック（24W・アルミ・7ポート）。uhubctlが確認されていない分、RSH-A37Sの方が確実。</p>
+          </article>
+        </div>
+
+        <h3>5,000円以下の製品 電力比較（全製品）</h3>
+        <table>
+          <thead><tr><th>製品</th><th>価格</th><th>電力</th><th>スマホ3台+SSD</th><th>スマホ2台+SSD</th><th>uhubctl</th></tr></thead>
+          <tbody>
+            <tr style="background:#f0fdf4"><td><strong>RSH-A37S + 社外60Wアダプタ</strong></td><td>約4,200円</td><td>60W</td><td><span class="badge ok">余裕</span></td><td><span class="badge ok">余裕</span></td><td><span class="badge ok">対応</span></td></tr>
+            <tr style="background:#eff6ff"><td><strong>atolla 48W版（7+4）</strong></td><td>約4,200円</td><td>48W</td><td><span class="badge ok">余裕</span></td><td><span class="badge ok">余裕</span></td><td><span class="badge warn">未確認</span></td></tr>
+            <tr style="background:#eff6ff"><td><strong>JESWO 11ポート</strong></td><td>約3,689円</td><td>36W</td><td><span class="badge ok">余裕</span></td><td><span class="badge ok">余裕</span></td><td><span class="badge warn">未確認</span></td></tr>
+            <tr style="background:#fffbeb"><td><strong>RSH-A37S（付属アダプタ）</strong></td><td>約2,700円</td><td>24W</td><td><span class="badge warn">ギリギリ</span></td><td><span class="badge ok">余裕</span></td><td><span class="badge ok">対応</span></td></tr>
+            <tr style="background:#fffbeb"><td><strong>RSH-A107（全ポート10Gbps）</strong></td><td>約4,000〜5,000円</td><td>24W</td><td><span class="badge warn">ギリギリ</span></td><td><span class="badge ok">余裕</span></td><td><span class="badge ok">対応見込み</span></td></tr>
+            <tr style="background:#fffbeb"><td><strong>UGREEN 7ポート</strong></td><td>約3,824円</td><td>24W</td><td><span class="badge warn">ギリギリ</span></td><td><span class="badge ok">余裕</span></td><td><span class="badge warn">未確認</span></td></tr>
+            <tr style="background:#fffbeb"><td><strong>atolla 7+1ポート</strong></td><td>約3,200円</td><td>20W</td><td><span class="badge warn">不足気味</span></td><td><span class="badge ok">OK</span></td><td><span class="badge warn">未確認</span></td></tr>
+            <tr style="background:#fef2f2"><td><strong>RSH-ST07C</strong></td><td>約3,500円</td><td>15W</td><td><span class="badge todo">不足</span></td><td><span class="badge warn">ギリギリ</span></td><td><span class="badge warn">4/7のみ</span></td></tr>
+            <tr style="background:#fef2f2"><td><strong>サンワダイレクト 400-HUBC32GM</strong></td><td>¥5,280</td><td>15W</td><td><span class="badge todo">不足</span></td><td><span class="badge warn">ギリギリ</span></td><td><span class="badge warn">不明</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 惜しい製品（8ポート以下だがアダプタ不足） -->
+    <section>
+      <h2>惜しい製品（8ポート以下・uhubctl対応だが60W未満）</h2>
+      <div class="body">
+        <p>uhubctl対応チップ搭載で8ポート以下だが、付属ACアダプタが60W未満のため全条件をクリアできない製品。</p>
+        <table>
+          <thead><tr><th>製品</th><th>ポート</th><th>付属アダプタ</th><th>uhubctl</th><th>筐体</th><th>速度</th><th>価格</th><th>備考</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Rosonway RSH-A37S</strong></td>
+              <td>7</td>
+              <td><span class="badge warn">24W</span></td>
+              <td><span class="badge ok">2109:2822</span></td>
+              <td><span class="badge ok">アルミ</span></td>
+              <td>5Gbps</td>
+              <td>約3,200円</td>
+              <td>12V DCジャック。社外60Wアダプタに交換可能だが非公式（自己責任）</td>
+            </tr>
+            <tr>
+              <td><strong>Rosonway RSH-ST07C</strong></td>
+              <td>7</td>
+              <td><span class="badge todo">15W</span></td>
+              <td><span class="badge warn">2109:2822（4/7のみ）</span></td>
+              <td><span class="badge ok">アルミ</span></td>
+              <td>10Gbps×3 + 5Gbps×4</td>
+              <td>Amazon.co.jpで検索</td>
+              <td>10Gbpsポートあり。uhubctlは7ポート中4ポートのみ制御可</td>
+            </tr>
+            <tr>
+              <td>Rosonway RSH-518C</td>
+              <td>7</td>
+              <td><span class="badge todo">10W</span></td>
+              <td><span class="badge ok">2109:0817</span></td>
+              <td><span class="badge ok">アルミ</span></td>
+              <td>5Gbps</td>
+              <td>約3,500〜5,000円</td>
+              <td>USB-C上流。アダプタ容量が小さすぎ</td>
+            </tr>
+            <tr>
+              <td>AmazonBasics HU9003V1EBL</td>
+              <td>7</td>
+              <td><span class="badge warn">36W</span></td>
+              <td><span class="badge ok">2109:2817</span></td>
+              <td>プラスチック</td>
+              <td>5Gbps</td>
+              <td>不明</td>
+              <td>日本での入手性が不確実</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="tip-box">
+          <h3>アダプタ交換という選択肢（自己責任）</h3>
+          <p><strong>Rosonway RSH-A37S</strong> は12V DCバレルジャックを使用しており、付属の12V/2A（24W）アダプタを <strong>12V/5A（60W）の社外アダプタに交換</strong>すれば電力問題は解消できます。uhubctlチップ（VIA Labs VL822）はアダプタ容量に関係なく動作します。ただし<strong>ハブ内部の配線や部品の定格電流が不明</strong>なため、過電流のリスクがあり非公式な改造となります。</p>
+          <p>この方法を取る場合: アルミ筐体 + uhubctl対応 + 約3,200円 + 社外アダプタ約1,500円 = <strong>合計約4,700円で60W級のアルミハブ</strong>が手に入る計算です。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8ポート超の有力製品 -->
+    <section>
+      <h2>参考: 8ポート超の有力製品</h2>
+      <div class="body">
+        <p>8ポートの制約を外せば、10Gbps・Type-C下流・アルミ筐体の製品が選べます。</p>
+        <div class="product-grid">
+          <article class="product-card" style="border:2px solid #2563eb">
+            <div><span class="badge info">8ポート超で総合最強</span></div>
+            <h3>RSHTECH RSH-ST10C-6</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>10ポート（Type-A 7 + <strong>Type-C 3</strong>）</dd>
+              <dt>USB規格</dt><dd><strong>USB 3.2 Gen2（10Gbps）</strong>×3 + USB 3.0×7</dd>
+              <dt>ACアダプタ</dt><dd>60W付属</dd>
+              <dt>ポートON/OFF</dt><dd>uhubctl対応（0BDA:0423）</dd>
+              <dt>筐体</dt><dd><strong>アルミニウム</strong></dd>
+              <dt>Type-C下流</dt><dd><strong>あり</strong>（スマホ直結可）</dd>
+              <dt>価格</dt><dd>約6,000〜9,000円</dd>
+            </dl>
+          </article>
+
+          <article class="product-card">
+            <div><span class="badge info">電力最強 100W</span></div>
+            <h3>Rosonway RSH-A16</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>16ポート（全Type-A）</dd>
+              <dt>ACアダプタ</dt><dd><strong>100W</strong>（12V/8.3A）</dd>
+              <dt>uhubctl</dt><dd>0BDA:0411</dd>
+              <dt>筐体</dt><dd>アルミ / PSE認証済み</dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B08HHZQ728">B08HHZQ728</a></dd>
+              <dt>価格</dt><dd>約6,000〜8,000円</dd>
+            </dl>
+          </article>
+
+          <article class="product-card">
+            <div><span class="badge info">全ポート10Gbps</span></div>
+            <h3>Rosonway RSH-A13</h3>
+            <dl class="spec">
+              <dt>ポート数</dt><dd>13ポート（全Type-A）</dd>
+              <dt>USB規格</dt><dd><strong>全ポートUSB 3.2 Gen2（10Gbps）</strong></dd>
+              <dt>ACアダプタ</dt><dd>72W（12V/6A）</dd>
+              <dt>uhubctl</dt><dd>2109:2822</dd>
+              <dt>筐体</dt><dd>アルミ</dd>
+              <dt>Amazon</dt><dd><a href="https://www.amazon.co.jp/dp/B09GBDPGY3">B09GBDPGY3</a></dd>
+              <dt>価格</dt><dd>約7,000〜8,000円</dd>
+            </dl>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 条件を満たさない製品 -->
+    <section>
+      <h2>条件を満たさない製品（参考）</h2>
+      <div class="body">
+        <p>スペックは魅力的だが、60W以上+uhubctl対応+日本購入可の全条件を満たさない製品。</p>
+        <table>
+          <thead><tr><th>製品</th><th>ポート</th><th>電力</th><th>速度</th><th>不適格の理由</th></tr></thead>
+          <tbody>
+            <tr><td>ORICO M3U4C3-G2</td><td>7（Type-C混合）</td><td>72W</td><td><strong>10Gbps</strong></td><td><span class="badge todo">uhubctl未確認</span> スペックは最強だがソフトウェア制御不可の可能性</td></tr>
+            <tr><td>SABRENT HB-BU10</td><td>10</td><td>60W</td><td>5Gbps</td><td><span class="badge todo">uhubctl未確認</span> 物理スイッチはあるがソフト制御不可</td></tr>
+            <tr><td>StarTech HB31C2A2CME</td><td>4（Type-C混合）</td><td>36W</td><td><strong>10Gbps</strong></td><td><span class="badge warn">36Wで電力不足</span> 産業グレードだが電力不足</td></tr>
+            <tr><td>Rosonway RSH-A10</td><td>10</td><td>36W</td><td>5Gbps</td><td><span class="badge warn">36Wで電力不足</span> uhubctl対応だが電力基準未達</td></tr>
+            <tr><td>UUGear MEGA4</td><td>4</td><td>別売り</td><td>5Gbps</td><td><span class="badge warn">海外通販のみ</span> RPi専用設計だがACアダプタ別売り・日本入手困難</td></tr>
+            <tr><td>Anker A7516 Ultra Slim</td><td>4</td><td>バスパワー</td><td>5Gbps</td><td><span class="badge todo">バスパワーのみ</span> ACアダプタなし</td></tr>
+          </tbody>
+        </table>
+        <div class="risk-box" style="border-left-color:#f59e0b;background:#fffbeb;margin-top:12px">
+          <h3 style="color:#b45309">物理スイッチ ≠ uhubctlソフト制御</h3>
+          <p>物理的なON/OFFスイッチがあっても、<strong>ハブコントローラチップがPer-Port Power Switching（PPPS）を実装</strong>していなければuhubctlでソフトウェア制御できません。確実なチップは <strong>VIA Labs（2109:xxxx）</strong> と <strong>Realtek（0BDA:xxxx）</strong> です。</p>
+        </div>
+
+        <p style="margin-top:16px"><strong>製品選定の参考リスト:</strong></p>
+        <ul>
+          <li><a href="https://github.com/mvp/uhubctl">uhubctl 互換性リスト</a> &mdash; 100以上のUSBハブモデルのポート電源制御対応状況</li>
+          <li><a href="https://elinux.org/RPi_Powered_USB_Hubs">eLinux.org - RPi Powered USB Hubs</a> &mdash; コミュニティ管理の互換性リスト</li>
+          <li><a href="https://github.com/mvp/uhubctl/issues/14">uhubctl Issue #14</a> &mdash; 「購入しやすいPPPS対応ハブ」のディスカッション</li>
+          <li><a href="https://github.com/mvp/uhubctl/issues/423">uhubctl Issue #423</a> &mdash; RSHTECH RSH-ST10C-6の動作報告</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- バックフィード問題 -->
+    <section>
+      <h2>最重要注意点: バックフィード（逆流給電）</h2>
+      <div class="body">
+        <div class="risk-box">
+          <h3>Raspberry Pi本体が損傷する危険性</h3>
+          <p>セルフパワーUSBハブからPiへの「バックフィード」は、Pi本体のポリヒューズ（F1/F2/F3）を<strong>迂回して電力が供給</strong>されるため、過電流保護が機能しなくなります。</p>
+          <ul>
+            <li>ハブのACアダプタが<strong>6Vを超える電圧</strong>を供給した場合、保護ダイオードD17が過熱し<strong>発煙や溶融</strong>の危険</li>
+            <li>eLinux.orgに「melts, scorching, smoke or worse」との警告が明記</li>
+            <li><strong>Pi 3B以前</strong>のモデルでは特に深刻なリスク</li>
+            <li><strong>Pi 4以降</strong>は1.2A電流制限スイッチICが搭載され保護が改善</li>
+          </ul>
+        </div>
+
+        <h3>バックフィード防止策</h3>
+        <table>
+          <thead><tr><th>対策</th><th>方法</th><th>難易度</th><th>効果</th></tr></thead>
+          <tbody>
+            <tr><td>バックフィードしないハブを選ぶ</td><td>Plugable USB2-HUB-AG7など実測済み製品を使用</td><td><span class="badge ok">簡単</span></td><td><span class="badge ok">最も安全</span></td></tr>
+            <tr><td>データ専用USBケーブル</td><td>電源線（VBUS）が結線されていないケーブルを使用</td><td><span class="badge ok">簡単</span></td><td><span class="badge ok">確実</span></td></tr>
+            <tr><td>+5V線を物理的に切断</td><td>USBケーブルのピン1（VBUS/+5V）のみを切断</td><td><span class="badge warn">要工作</span></td><td><span class="badge ok">確実</span></td></tr>
+            <tr><td>Pi 4B/5を使用</td><td>電流制限スイッチIC搭載モデルを選択</td><td><span class="badge ok">簡単</span></td><td><span class="badge warn">軽減のみ</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- uhubctl -->
+    <section>
+      <h2>uhubctl によるポート電源制御</h2>
+      <div class="body">
+        <div class="tip-box">
+          <h3>USBポートの電源をソフトウェアで制御</h3>
+          <p><a href="https://github.com/mvp/uhubctl">uhubctl</a> はUSBハブのポートごとの電源制御ユーティリティです。スマホへの給電のON/OFF制御に使えます。</p>
+        </div>
+        <table>
+          <thead><tr><th>項目</th><th>内容</th></tr></thead>
+          <tbody>
+            <tr><td>インストール</td><td><code>sudo apt install uhubctl</code></td></tr>
+            <tr><td>対応Piモデル</td><td>B+, 2B, 3B, 3B+, 4B, 5</td></tr>
+            <tr><td>Pi 3B以前の制約</td><td>ポート2-5がganged（連動）制御 &mdash; 個別制御不可</td></tr>
+            <tr><td>Pi 4Bの要件</td><td>VL805ファームウェア 00137ad 以降へのアップデートが必要</td></tr>
+            <tr><td>互換ハブ数</td><td>100以上のモデルが互換性リストに掲載</td></tr>
+          </tbody>
+        </table>
+        <div class="risk-box" style="border-left-color:#f59e0b;background:#fffbeb">
+          <h3 style="color:#b45309">VBUS制御の落とし穴</h3>
+          <p>一部のUSBハブではポート電源をオフにしても<strong>VBUS（電源供給線）が遮断されない</strong>ため、接続したスマホが充電され続ける場合があります。コスト削減のためVBUS制御用部品を省略しているハブが多いため、<strong>per-port power switching対応</strong>の有無を事前に確認してください。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- セルフパワー vs バスパワー -->
+    <section>
+      <h2>セルフパワー vs バスパワー</h2>
+      <div class="body">
+        <table>
+          <thead><tr><th>方式</th><th>電源</th><th>各ポート給電</th><th>スマホ給電</th><th>価格帯</th></tr></thead>
+          <tbody>
+            <tr><td><strong>セルフパワー</strong></td><td>ACアダプタ（別電源）</td><td>500mA〜1.5A</td><td><span class="badge ok">対応可</span></td><td>2,000〜5,000円</td></tr>
+            <tr><td>バスパワー</td><td>USBケーブル経由</td><td>最大100mA</td><td><span class="badge todo">不可</span></td><td>500〜2,000円</td></tr>
+          </tbody>
+        </table>
+        <p><strong>スマホ給電にはセルフパワー方式が必須です。</strong>バスパワーハブは各ポート最大100mAに制限され、スマホへの給電はできません。</p>
+      </div>
+    </section>
+
+    <!-- 未解決の課題 -->
+    <section>
+      <h2>未解決の課題・今後の確認事項</h2>
+      <div class="body">
+        <ol>
+          <li><strong>現行品の入手性:</strong> 動作実績のある製品（PiHub、Plugable USB2-HUB-AG7等）は2012-2013年頃のUSB 2.0製品で、2026年現在の日本での入手は困難な可能性が高い</li>
+          <li><strong>USB 3.0ハブの互換性:</strong> Pi 4B/5でUSB BC 1.2やPD対応セルフパワーハブを使った場合の安定性について実機検証データが不足</li>
+          <li><strong>スマホのUSBモード:</strong> USBテザリングやADB接続中にハブ経由で給電する場合、「充電モード」と「データ通信モード」の切替が正しく動作するか要確認</li>
+          <li><strong>Anker等の現行製品:</strong> uhubctlの互換性リストに掲載されている現行世代ハブの日本での入手性は要調査</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 検証結果サマリー -->
+    <section>
+      <h2>調査の検証結果</h2>
+      <div class="body">
+        <table>
+          <thead><tr><th>カテゴリ</th><th>件数</th><th>備考</th></tr></thead>
+          <tbody>
+            <tr><td>調査角度</td><td>5</td><td>製品レビュー、技術仕様、互換性、スマホ接続、トラブル事例</td></tr>
+            <tr><td>ソース取得</td><td>20</td><td>eLinux.org、uhubctl GitHub、RPiフォーラム、技術ブログ等</td></tr>
+            <tr><td>クレーム抽出</td><td>32</td><td>ソースから抽出した検証可能な主張</td></tr>
+            <tr><td>3票制検証</td><td>25</td><td>独立した3エージェントによる賛否投票</td></tr>
+            <tr><td><span class="badge ok">確認済み</span></td><td>20</td><td>2/3以上の賛成で承認</td></tr>
+            <tr><td><span class="badge todo">否定</span></td><td>5</td><td>PiHub 1.1Aポートでスマホ給電可能、ELECOM推奨等</td></tr>
+          </tbody>
+        </table>
+        <h3>否定されたクレーム（注意）</h3>
+        <ul>
+          <li><del>PiHubの1ポートは1.1A出力でスマホ給電が可能</del> &mdash; 0-3で否定</li>
+          <li><del>ELECOM U3H-T410SWHはRaspberry Pi 4Bでの使用が推奨されている</del> &mdash; 1-2で否定</li>
+          <li><del>PiHubはRaspberry Pi Foundation唯一の推奨品</del> &mdash; 0-3で否定</li>
+          <li><del>USB1.0は150mAという上限値</del> &mdash; 0-3で否定（正確な数値ではない）</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ソース一覧 -->
+    <section>
+      <h2>参考ソース</h2>
+      <div class="body">
+        <ul class="source-list">
+          <li><strong>[primary]</strong> <a href="https://elinux.org/RPi_Powered_USB_Hubs">eLinux.org - RPi Powered USB Hubs</a> &mdash; コミュニティ管理の動作確認済みハブリスト</li>
+          <li><strong>[primary]</strong> <a href="https://github.com/mvp/uhubctl">uhubctl - GitHub</a> &mdash; USBハブのポート電源制御ユーティリティ</li>
+          <li><strong>[forum]</strong> <a href="https://forums.raspberrypi.com/viewtopic.php?t=86081">Raspberry Pi Forums - バックフィード問題</a></li>
+          <li><strong>[blog]</strong> <a href="https://voltechno.com/blog/usb-powersupply/">VOLTECHNO - USB充電器の規格や給電</a></li>
+          <li><strong>[blog]</strong> <a href="https://tamatora.36nyan.com/?p=2045">たまトラ - セルフパワーUSBハブ供給電流比較</a></li>
+          <li><strong>[secondary]</strong> Amazon.co.jp - Pimoroni PiHub (B00FE8AVMU)</li>
+          <li><strong>[blog]</strong> <a href="https://www.thun-techblog.com/index.php/blog/review-u3h-t410swh-rpi-rec-3hub/">THUNの遊戯室 - ELECOM U3H-T410SWHレビュー</a></li>
+          <li><strong>[review]</strong> <a href="https://www.amazon.co.jp/product-reviews/B087X2F876">Amazon.co.jp - RSH-A37Sカスタマーレビュー</a> &mdash; RPi 4B互換性問題の報告</li>
+          <li><strong>[review]</strong> <a href="https://www.amazon.co.jp/product-reviews/B07JC2NCCC">Amazon.co.jp - atolla 7+1ポートカスタマーレビュー</a></li>
+          <li><strong>[tool]</strong> <a href="https://sakura-checker.jp/">サクラチェッカー</a> &mdash; USBハブカテゴリの55%以上がサクラ商品との分析</li>
+          <li><strong>[review]</strong> <a href="https://curious-review.com/atolla-kaisya/">atolla会社調査レビュー</a></li>
+          <li><strong>[review]</strong> <a href="https://electronikz.com/products/jeswo-11-port-usb-hub-review">JESWO 11ポートUSBハブ レビュー</a></li>
+          <li><strong>[official]</strong> <a href="https://direct.sanwa.co.jp/ItemPage/400-HUBC32GM">サンワダイレクト 400-HUBC32GM 製品ページ</a> &mdash; DC5V/3A（15W）ACアダプタ、BC1.2全ポート対応</li>
+          <li><strong>[review]</strong> <a href="https://win-tab.net/acc/sanwa_400_hubc32gm_2409181/">ウインタブ - 400-HUBC32GM/400-HUBA32GM レビュー</a></li>
+          <li><strong>[price]</strong> <a href="https://kakaku.com/item/K0001653108/">価格.com - サンワサプライ 400-HUBC32GM</a></li>
+          <li><strong>[official]</strong> <a href="https://direct.sanwa.co.jp/ItemPage/400-HUBA23GM">サンワダイレクト 400-HUBA23GM 製品ページ</a> &mdash; DC12V/4A（48W）ACアダプタ、10ポート、全ポート個別スイッチ</li>
+          <li><strong>[review]</strong> <a href="https://laugh-gadget.com/2024/04/18/sanwa-supply-10port-usb-hub/">chitose - 400-HUBA23GM 実機レビュー</a></li>
+          <li><strong>[review]</strong> <a href="https://ikoanlife.com/review-400-huba23gm/">IKOAN LIFE - 400-HUBA23GM 実機レビュー</a></li>
+          <li><strong>[price]</strong> <a href="https://kakaku.com/item/K0001583998/">価格.com - サンワサプライ 400-HUBA23GM</a></li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>
